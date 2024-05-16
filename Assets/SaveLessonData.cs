@@ -25,23 +25,19 @@ public class SaveLessonData : MonoBehaviour
     public void SaveData()
     {
         lessonData.TurkceCorrectAnswers = int.Parse(TurkceCorrectInputField.text);
-        lessonData.TurkceWrongAnswers = int.Parse(TurkceCorrectInputField.text);
-        lessonData.TurkceEmptyAnswers = int.Parse(TurkceCorrectInputField.text);
+        lessonData.TurkceWrongAnswers = int.Parse(TurkceWrongInputField.text);
+        lessonData.TurkceEmptyAnswers = int.Parse(TurkceEmptyInputField.text);
 
         lessonData.MatematikCorrectAnswers = int.Parse(MatematikCorrectInputField.text);
-        lessonData.MatematikWrongAnswers = int.Parse(MatematikCorrectInputField.text);
-        lessonData.MatematikEmptyAnswers = int.Parse(MatematikCorrectInputField.text);
+        lessonData.MatematikWrongAnswers = int.Parse(MatematikWrongInputField.text);
+        lessonData.MatematikEmptyAnswers = int.Parse(MatematikEmptyInputField.text);
 
         lessonData.FenCorrectAnswers = int.Parse(FenCorrectInputField.text);
-        lessonData.FenWrongAnswers = int.Parse(FenCorrectInputField.text);
-        lessonData.FenEmptyAnswers = int.Parse(FenCorrectInputField.text);
+        lessonData.FenWrongAnswers = int.Parse(FenWrongInputField.text);
+        lessonData.FenEmptyAnswers = int.Parse(FenEmptyInputField.text);
 
         lessonData.SosyalCorrectAnswers = int.Parse(SosyalCorrectInputField.text);
-        lessonData.SosyalWrongAnswers = int.Parse(SosyalCorrectInputField.text);
-        lessonData.SosyalEmptyAnswers = int.Parse(SosyalCorrectInputField.text);
-
-        //UnityEditor.AssetDatabase.SaveAssets();
-        //UnityEditor.AssetDatabase.Refresh();
-        //Bu iki satýr gerekli deðil çünkü scriptable object zaten otomatik kayýt gerçekleþtiriyor.
+        lessonData.SosyalWrongAnswers = int.Parse(SosyalWrongInputField.text);
+        lessonData.SosyalEmptyAnswers = int.Parse(SosyalEmptyInputField.text);
     }
 }
