@@ -6196,9 +6196,8 @@ MonoBehaviour:
   SosyalCorrectInputField: {fileID: 1470631015}
   SosyalWrongInputField: {fileID: 1060038017}
   SosyalEmptyInputField: {fileID: 183821571}
-  toplamNet: 0
   lessonData: {fileID: 11400000, guid: 30638a1cd9bf5a54f9271e7eebd50486, type: 2}
-  confirmButton: {fileID: 1725731874}
+  graph: {fileID: 1937505957}
 --- !u!1 &1787720009
 GameObject:
   m_ObjectHideFlags: 0
@@ -7346,7 +7345,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   circleSprite: {fileID: 21300000, guid: a9114e04916d9b045bddd3363b6f7b9d, type: 3}
-  saveLessonData: {fileID: 1725731877}
 --- !u!114 &1937505958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7371,9 +7369,8 @@ MonoBehaviour:
   SosyalCorrectInputField: {fileID: 1470631015}
   SosyalWrongInputField: {fileID: 1060038017}
   SosyalEmptyInputField: {fileID: 183821571}
-  toplamNet: 0
   lessonData: {fileID: 11400000, guid: 30638a1cd9bf5a54f9271e7eebd50486, type: 2}
-  confirmButton: {fileID: 1725731874}
+  graph: {fileID: 1937505957}
 --- !u!1 &1944090201
 GameObject:
   m_ObjectHideFlags: 0
