@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec49b471ea708a44fb83afaa560fbd97, type: 3}
   m_Name: LessonData
   m_EditorClassIdentifier: 
-  TurkceCorrectAnswers: 0
+  TurkceCorrectAnswers: 39
   TurkceWrongAnswers: 0
   TurkceEmptyAnswers: 0
-  MatematikCorrectAnswers: 0
+  MatematikCorrectAnswers: 40
   MatematikWrongAnswers: 0
   MatematikEmptyAnswers: 0
-  FenCorrectAnswers: 0
+  FenCorrectAnswers: 20
   FenWrongAnswers: 0
   FenEmptyAnswers: 0
-  SosyalCorrectAnswers: 0
+  SosyalCorrectAnswers: 20
   SosyalWrongAnswers: 0
   SosyalEmptyAnswers: 0

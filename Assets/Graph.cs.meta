@@ -3,7 +3,9 @@ guid: a98008baf18c89f4390a2caa8454fba8
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - circleSprite: {fileID: 21300000, guid: a9114e04916d9b045bddd3363b6f7b9d, type: 3}
+  - saveLessonData: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
