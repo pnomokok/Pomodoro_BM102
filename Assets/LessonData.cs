@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "NewLessonData", menuName = "Lesson Data")]
 public class LessonData : ScriptableObject
@@ -18,4 +19,6 @@ public class LessonData : ScriptableObject
     public int SosyalCorrectAnswers;
     public int SosyalWrongAnswers;
     public int SosyalEmptyAnswers;
+
+    public List<float> lastFiveNets = new List<float>();
 }
