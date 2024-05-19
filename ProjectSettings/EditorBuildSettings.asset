@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Pomodoro_BM102/4.1_sonucekle.unity
     guid: 41971a5c840baf341a89a8391684a03e
+  - enabled: 1
+    path: Assets/Pomodoro_BM102/4.2_sonucgor.unity
+    guid: e141adc97d0c95948b3de1b692781a53
+  - enabled: 1
+    path: Assets/Pomodoro_BM102/4_deneme.unity
+    guid: ec475ff0f0b61514e9ea32ccb3e891ad
   m_configObjects: {}
