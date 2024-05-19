@@ -1,3 +1,145 @@
+//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
+//using TMPro;
+//using UnityEngine.UI;
+//using System;
+//using UnityEngine.Events;
+
+//public class Timer : MonoBehaviour
+//{
+//    public TMP_Text timeText;
+//    public Image slider;
+//    public float workTimeLimit = 60f; // Çalýþma süresi
+//    public float breakTimeLimit = 60f; // Mola süresi
+//    public int setCount = 3; // Tekrar sayýsý
+
+//    public bool inMinutes;
+
+//    private float pausedTime;
+
+//    [Space]
+//    public UnityEvent OnStart, OnComplete;
+
+//    private float time;
+//    private bool startTimer;
+//    private bool isWorkTime; // Çalýþma mý yoksa mola zamaný mý olduðunu takip eder
+
+//    private float multiplierFactor;
+//    private int currentSetCount;
+
+//    private void Start()
+//    {
+//        ResetTimer();
+//    }
+
+//    public void StartTimer()
+//    {
+//        if (!startTimer)
+//        {
+//            if (pausedTime > 0f)
+//            {
+//                time = pausedTime; // Durdurulan zamaný kullan
+//                pausedTime = 0f; // Durdurulan zamaný sýfýrla
+//                multiplierFactor = 1f / (isWorkTime ? workTimeLimit : breakTimeLimit); // Doðru limiti kullan
+//                slider.fillAmount = time * multiplierFactor; // Slider'ý doðru þekilde güncelle
+//            }
+//            else
+//            {
+//                time = isWorkTime ? workTimeLimit : breakTimeLimit;
+//                multiplierFactor = 1f / time;
+//                slider.fillAmount = 1f; // Yeni süre baþladýðýnda slider'ý tam doldur
+//            }
+//            startTimer = true;
+//            OnStart?.Invoke();
+//        }
+//    }
+
+//    private void Update()
+//    {
+//        if (!startTimer) return;
+
+//        if (time > 0f)
+//        {
+//            time -= Time.deltaTime;
+//            UpdateTimeText();
+//            slider.fillAmount = time * multiplierFactor;
+//        }
+//        else
+//        {
+//            if (isWorkTime)
+//            {
+//                // Çalýþma süresi tamamlandý, mola süresine geç
+//                isWorkTime = false;
+//                time = breakTimeLimit;
+//            }
+//            else
+//            {
+//                // Mola süresi tamamlandý, set sayýsýný kontrol et
+//                currentSetCount--;
+//                if (currentSetCount > 0)
+//                {
+//                    isWorkTime = true;
+//                    time = workTimeLimit;
+//                }
+//                else
+//                {
+//                    // Tüm setler tamamlandý
+//                    startTimer = false;
+//                    OnComplete?.Invoke();
+//                    ResetTimer();
+//                    return;
+//                }
+//            }
+//            multiplierFactor = 1f / time;
+//            UpdateTimeText();
+//            slider.fillAmount = 1f;
+//        }
+//    }
+
+//    private void UpdateTimeText()
+//    {
+//        if (time < 0f) time = 0f; // Zaman negatifse sýfýrlayýn
+//        if (inMinutes)
+//        {
+//            int minutes = Mathf.FloorToInt(time / 60);
+//            int seconds = Mathf.FloorToInt(time % 60);
+//            timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+//        }
+//        else
+//        {
+//            timeText.text = Mathf.CeilToInt(time).ToString();
+//        }
+//    }
+
+//    public void PauseTimer()
+//    {
+//        if (startTimer)
+//        {
+//            startTimer = false;
+//            pausedTime = time;
+//        }
+//    }
+
+//    public void RestartTimer()
+//    {
+//        startTimer = false;
+//        pausedTime = 0f;
+//        ResetTimer();
+//    }
+
+//    private void ResetTimer()
+//    {
+//        currentSetCount = setCount;
+//        isWorkTime = true;
+//        time = workTimeLimit;
+//        multiplierFactor = 1f / time;
+//        UpdateTimeText();
+//        slider.fillAmount = 1f;
+//    }
+//}
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,108 +148,150 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.Events;
 
-public class timer : MonoBehaviour
+public class Timer : MonoBehaviour
 {
     public TMP_Text timeText;
     public Image slider;
-    public float timeLimit = 60f;
-
+    public float workTimeLimit = 60f; // Çalýþma süresi
+    public float breakTimeLimit = 60f; // Mola süresi
+    public int setCount = 3; // Tekrar sayýsý
+    public ChangeColor changeColorScript; // ChangeColor script referansý
     public bool inMinutes;
-
+    private float pausedTime;
     [Space]
     public UnityEvent OnStart, OnComplete;
-    
-    float time;
-    bool startTimer;
 
-    float multiplierFactor;
-    TimeSpan timeConvertor;
+    private float time;
+    private bool startTimer;
+    private bool isWorkTime; // Çalýþma mý yoksa mola zamaný mý olduðunu takip eder
+    private float multiplierFactor;
+    private int currentSetNumber;
 
     private void Start()
     {
-        timeText.text= timeLimit.ToString();
-        time = timeLimit;
-        slider.fillAmount = multiplierFactor * time;
-        startTimer = false;
-
-
-        if (inMinutes)
-        {
-            timeConvertor = TimeSpan.FromSeconds(time);
-            float minutes = timeConvertor.Minutes;
-            float seconds = timeConvertor.Seconds;
-
-            timeText.text = $"{minutes}:{seconds}";
-        }
-        else
-        {
-            timeText.text = Mathf.CeilToInt(time).ToString();
-        }
-
+        ResetTimer();
     }
-     public void StartTimer()
-     {
-        multiplierFactor = 1f/timeLimit;
-        startTimer = true;
 
-        slider.fillAmount=multiplierFactor*time;
-
-        OnStart?.Invoke();  
-     }
-    private void Update()
+    public void StartTimer()
     {
-        if (!startTimer) return;
-       
-        if(time > 0f)
+        if (!startTimer)
         {
-            time -= Time.deltaTime;
-
-            if (inMinutes)
+            if (pausedTime > 0f)
             {
-                timeConvertor = TimeSpan.FromSeconds(time);
-                float minutes = timeConvertor.Minutes;
-                float seconds = timeConvertor.Seconds;
-
-                timeText.text = $"{minutes}:{seconds}";
+                time = pausedTime; // Durdurulan zamaný kullan
+                pausedTime = 0f; // Durdurulan zamaný sýfýrla
+                multiplierFactor = 1f / (isWorkTime ? workTimeLimit : breakTimeLimit); // Doðru limiti kullan
+                slider.fillAmount = time * multiplierFactor; // Slider'ý doðru þekilde güncelle
             }
             else
             {
-                timeText.text = Mathf.CeilToInt(time).ToString();
+                time = isWorkTime ? workTimeLimit : breakTimeLimit;
+                multiplierFactor = 1f / time;
+                slider.fillAmount = 1f; // Yeni süre baþladýðýnda slider'ý tam doldur
             }
-  
-            slider.fillAmount = multiplierFactor * time;
+            startTimer = true;
+            OnStart?.Invoke();
+            UpdateStatusText();
+        }
+    }
+
+    private void Update()
+    {
+        if (!startTimer) return;
+
+        if (time > 0f)
+        {
+            time -= Time.deltaTime;
+            UpdateTimeText();
+            slider.fillAmount = time * multiplierFactor;
         }
         else
         {
-            startTimer = false;
-            OnComplete?.Invoke();
+            if (isWorkTime)
+            {
+                // Çalýþma süresi tamamlandý, mola süresine geç
+                isWorkTime = false;
+                time = breakTimeLimit;
+            }
+            else
+            {
+                // Mola süresi tamamlandý, set sayýsýný kontrol et
+                currentSetNumber++;
+                if (currentSetNumber < setCount)
+                {
+                    isWorkTime = true;
+                    time = workTimeLimit;
+                }
+                else
+                {
+                    // Tüm setler tamamlandý
+                    startTimer = false;
+                    OnComplete?.Invoke();
+                    ResetTimer();
+                    return;
+                }
+            }
+            multiplierFactor = 1f / time;
+            UpdateTimeText();
+            slider.fillAmount = 1f;
+            UpdateStatusText();
         }
     }
-    public void PauseTimer()
+
+    private void UpdateTimeText()
     {
-        if(startTimer)
-        {
-            startTimer= false;
-        }
-    }
-    public void RestartTimer()
-    {
-        time = timeLimit;
+        if (time < 0f) time = 0f; // Zaman negatifse sýfýrlayýn
         if (inMinutes)
         {
-            timeConvertor = TimeSpan.FromSeconds(time);
-            float minutes = timeConvertor.Minutes;
-            float seconds = timeConvertor.Seconds;
-
-            timeText.text = $"{minutes}:{seconds}";
+            int minutes = Mathf.FloorToInt(time / 60);
+            int seconds = Mathf.FloorToInt(time % 60);
+            timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
         }
         else
         {
             timeText.text = Mathf.CeilToInt(time).ToString();
         }
+    }
 
-        timeText.text = time.ToString();
-        slider.fillAmount = multiplierFactor * time;
+    public void PauseTimer()
+    {
+        if (startTimer)
+        {
+            startTimer = false;
+            pausedTime = time;
+        }
+    }
 
+    public void RestartTimer()
+    {
+        startTimer = false;
+        pausedTime = 0f;
+        ResetTimer();
+    }
+
+    private void ResetTimer()
+    {
+        currentSetNumber = 0;
+        isWorkTime = true;
+        time = workTimeLimit;
+        multiplierFactor = 1f / time;
+        UpdateTimeText();
+        slider.fillAmount = 1f;
+        UpdateStatusText(); // Ýlk baþta durumu güncelle
+    }
+
+    private void UpdateStatusText()
+    {
+        if (changeColorScript != null)
+        {
+            if (isWorkTime)
+            {
+                changeColorScript.UpdateText($"{currentSetNumber + 1}. set Ders");
+            }
+            else
+            {
+                changeColorScript.UpdateText($"{currentSetNumber + 1}. set Mola");
+            }
+        }
     }
 }
