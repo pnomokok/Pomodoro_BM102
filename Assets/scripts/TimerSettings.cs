@@ -6,7 +6,7 @@ public class TimerSettings : MonoBehaviour
     public TMP_InputField workTimeInput;
     public TMP_InputField breakTimeInput;
     public TMP_InputField setCountInput;
-    public timer timerScript; // Timer script referansý
+    public Timer timerScript; // Timer script referansý
 
     private int workTime;
     private int breakTime;
@@ -19,9 +19,10 @@ public class TimerSettings : MonoBehaviour
             int.TryParse(breakTimeInput.text, out breakTime) &&
             int.TryParse(setCountInput.text, out setCount))
         {
-            // Burada timer scriptine ayarlarý aktarabilirsiniz
-            timerScript.timeLimit = workTime * 60; // Çalýþma süresi (saniye cinsinden)
-            // Diðer gerekli ayarlamalarý da buradan yapabilirsiniz
+            // Timer scriptine ayarlarý aktar
+            timerScript.workTimeLimit = workTime * 60; // Çalýþma süresi (saniye cinsinden)
+            timerScript.breakTimeLimit = breakTime * 60; // Mola süresi (saniye cinsinden)
+            timerScript.setCount = setCount; // Set sayýsý
             Debug.Log($"Work Time: {workTime} minutes, Break Time: {breakTime} minutes, Set Count: {setCount}");
         }
         else
