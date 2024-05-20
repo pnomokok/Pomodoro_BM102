@@ -5,18 +5,21 @@ using UnityEngine.UI;
 public class Graph : MonoBehaviour
 {
     [SerializeField] private Sprite circleSprite;
-    [SerializeField] private RectTransform graphContainer; // SerializeField kullanarak doðrudan Unity Editor'de atama yapabiliriz.
+    [SerializeField] private Material lineMaterial;
+    private RectTransform graphContainer;
     private List<GameObject> circleList = new List<GameObject>();
+    private CustomLineDrawer lineDrawer;
 
     private void Start()
     {
-        if (graphContainer == null)
-        {
-            Debug.LogError("GraphContainer is not assigned in the Inspector.");
-            return;
-        }
+        graphContainer = transform.Find("GraphContainer").GetComponent<RectTransform>();
+        lineDrawer = gameObject.AddComponent<CustomLineDrawer>();
+        lineDrawer.SetLineMaterial(lineMaterial);
 
-        UpdateGraph(DataManager.Instance.lastFiveNets);
+        if (DataManager.Instance != null && DataManager.Instance.lastFiveNets != null)
+        {
+            UpdateGraph(DataManager.Instance.lastFiveNets);
+        }
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
@@ -40,13 +43,20 @@ public class Graph : MonoBehaviour
         }
         circleList.Clear();
 
-        float xSpacing = 150f; // Grafik üzerindeki noktalar arasýndaki mesafe
+        float xSpacing = 150f;
+        List<Vector3> positions = new List<Vector3>();
+
         for (int i = 0; i < values.Count; i++)
         {
             float xPosition = xSpacing * (i + 1);
-            float yPosition = values[i] * 8f; // Net deðeri bir ölçekle çarparak y pozisyonuna dönüþtür
+            float yPosition = values[i] * 7f;
             GameObject circle = CreateCircle(new Vector2(xPosition, yPosition));
             circleList.Add(circle);
+
+            Vector2 anchoredPos = new Vector2(xPosition, yPosition);
+            positions.Add(graphContainer.TransformPoint(anchoredPos));
         }
+
+        lineDrawer.DrawLines(positions);
     }
 }

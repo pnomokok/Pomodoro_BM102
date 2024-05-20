@@ -22,11 +22,6 @@ public class SaveLessonData : MonoBehaviour
 
     public LessonData lessonData;
 
-    private void Start()
-    {
-        LoadInputFields();
-    }
-
     public void SaveData()
     {
         lessonData.TurkceCorrectAnswers = int.Parse(TurkceCorrectInputField.text);
@@ -49,45 +44,5 @@ public class SaveLessonData : MonoBehaviour
                           (lessonData.TurkceWrongAnswers + lessonData.MatematikWrongAnswers + lessonData.FenWrongAnswers + lessonData.SosyalWrongAnswers) / 4.0f;
 
         DataManager.Instance.AddNet(toplamNet);
-    }
-
-    public void SaveInputFields()
-    {
-        PlayerPrefs.SetString("TurkceCorrect", TurkceCorrectInputField.text);
-        PlayerPrefs.SetString("TurkceWrong", TurkceWrongInputField.text);
-        PlayerPrefs.SetString("TurkceEmpty", TurkceEmptyInputField.text);
-
-        PlayerPrefs.SetString("MatematikCorrect", MatematikCorrectInputField.text);
-        PlayerPrefs.SetString("MatematikWrong", MatematikWrongInputField.text);
-        PlayerPrefs.SetString("MatematikEmpty", MatematikEmptyInputField.text);
-
-        PlayerPrefs.SetString("FenCorrect", FenCorrectInputField.text);
-        PlayerPrefs.SetString("FenWrong", FenWrongInputField.text);
-        PlayerPrefs.SetString("FenEmpty", FenEmptyInputField.text);
-
-        PlayerPrefs.SetString("SosyalCorrect", SosyalCorrectInputField.text);
-        PlayerPrefs.SetString("SosyalWrong", SosyalWrongInputField.text);
-        PlayerPrefs.SetString("SosyalEmpty", SosyalEmptyInputField.text);
-
-        PlayerPrefs.Save();
-    }
-
-    public void LoadInputFields()
-    {
-        TurkceCorrectInputField.text = PlayerPrefs.GetString("TurkceCorrect", "");
-        TurkceWrongInputField.text = PlayerPrefs.GetString("TurkceWrong", "");
-        TurkceEmptyInputField.text = PlayerPrefs.GetString("TurkceEmpty", "");
-
-        MatematikCorrectInputField.text = PlayerPrefs.GetString("MatematikCorrect", "");
-        MatematikWrongInputField.text = PlayerPrefs.GetString("MatematikWrong", "");
-        MatematikEmptyInputField.text = PlayerPrefs.GetString("MatematikEmpty", "");
-
-        FenCorrectInputField.text = PlayerPrefs.GetString("FenCorrect", "");
-        FenWrongInputField.text = PlayerPrefs.GetString("FenWrong", "");
-        FenEmptyInputField.text = PlayerPrefs.GetString("FenEmpty", "");
-
-        SosyalCorrectInputField.text = PlayerPrefs.GetString("SosyalCorrect", "");
-        SosyalWrongInputField.text = PlayerPrefs.GetString("SosyalWrong", "");
-        SosyalEmptyInputField.text = PlayerPrefs.GetString("SosyalEmpty", "");
     }
 }

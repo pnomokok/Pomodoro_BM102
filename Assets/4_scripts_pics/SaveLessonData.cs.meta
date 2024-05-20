@@ -3,7 +3,20 @@ guid: dbd49eaa0d3d710468956ba864dd0606
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - TurkceCorrectInputField: {instanceID: 0}
+  - TurkceWrongInputField: {instanceID: 0}
+  - TurkceEmptyInputField: {instanceID: 0}
+  - MatematikCorrectInputField: {instanceID: 0}
+  - MatematikWrongInputField: {instanceID: 0}
+  - MatematikEmptyInputField: {instanceID: 0}
+  - FenCorrectInputField: {instanceID: 0}
+  - FenWrongInputField: {instanceID: 0}
+  - FenEmptyInputField: {instanceID: 0}
+  - SosyalCorrectInputField: {instanceID: 0}
+  - SosyalWrongInputField: {instanceID: 0}
+  - SosyalEmptyInputField: {instanceID: 0}
+  - lessonData: {fileID: 11400000, guid: 30638a1cd9bf5a54f9271e7eebd50486, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
