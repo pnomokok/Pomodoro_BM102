@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Pomodoro_BM102/3_pomodoro.unity
+    guid: 3dd3b17ef51545f40ae56b4add361405
+  - enabled: 1
+    path: Assets/Pomodoro_BM102/2_motivasyon.unity
+    guid: 4328d39d32e6e5040870617c5fd61fb4
+  - enabled: 1
     path: Assets/Pomodoro_BM102/4_deneme.unity
     guid: ec475ff0f0b61514e9ea32ccb3e891ad
   - enabled: 1
