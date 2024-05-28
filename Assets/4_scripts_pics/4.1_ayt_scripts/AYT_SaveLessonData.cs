@@ -42,12 +42,44 @@ public class AYT_SaveLessonData : MonoBehaviour
         int fenWrong = ParseInputField(aytFenWrongInputField);
         int fenEmpty = ParseInputField(aytFenEmptyInputField);
 
-        if (!IsValidInput(sos1Correct, sos1Wrong, sos1Empty, 40) ||
-            !IsValidInput(sos2Correct, sos2Wrong, sos2Empty, 40) ||
-            !IsValidInput(matematikCorrect, matematikWrong, matematikEmpty, 40) ||
-            !IsValidInput(fenCorrect, fenWrong, fenEmpty, 40))
+        // Hangi bölümün doldurulduðunu kontrol et
+        bool isSay = IsSectionFilled(matematikCorrect, matematikWrong, matematikEmpty) && IsSectionFilled(fenCorrect, fenWrong, fenEmpty);
+        bool isEa = IsSectionFilled(matematikCorrect, matematikWrong, matematikEmpty) && IsSectionFilled(sos1Correct, sos1Wrong, sos1Empty);
+        bool isSoz = IsSectionFilled(sos1Correct, sos1Wrong, sos1Empty) && IsSectionFilled(sos2Correct, sos2Wrong, sos2Empty);
+
+        if ((isSay && isEa) || (isEa && isSoz) || (isSay && isSoz))
         {
-            warningText.text = "Lütfen her ders için geçerli deðerler girin. Toplam soru sayýsý ve negatif deðerler kontrol edilmeli.";
+            ShowWarning("Yalnýzca tek bir alan için deðer girin.");
+            return;
+        }
+
+        if (isSay)
+        {
+            if (!IsValidInput(matematikCorrect, matematikWrong, matematikEmpty, 40) || !IsValidInput(fenCorrect, fenWrong, fenEmpty, 40))
+            {
+                ShowWarning("SAY bölümü için geçerli deðerler girin. Matematik ve Fen toplamlarý 40 olmalýdýr ve negatif deðerler olmamalýdýr.");
+                return;
+            }
+        }
+        if (isEa)
+        {
+            if (!IsValidInput(matematikCorrect, matematikWrong, matematikEmpty, 40) || !IsValidInput(sos1Correct, sos1Wrong, sos1Empty, 40))
+            {
+                ShowWarning("EA bölümü için geçerli deðerler girin. Matematik ve Sosyal 1 toplamlarý 40 olmalýdýr ve negatif deðerler olmamalýdýr.");
+                return;
+            }
+        }
+        if (isSoz)
+        {
+            if (!IsValidInput(sos1Correct, sos1Wrong, sos1Empty, 40) || !IsValidInput(sos2Correct, sos2Wrong, sos2Empty, 40))
+            {
+                ShowWarning("SÖZ bölümü için geçerli deðerler girin. Sosyal 1 ve Sosyal 2 toplamlarý 40 olmalýdýr ve negatif deðerler olmamalýdýr.");
+                return;
+            }
+        }
+        if (!isSay && !isEa && !isSoz)
+        {
+            ShowWarning("Lütfen bir bölüm için geçerli deðerler girin.");
             return;
         }
 
@@ -89,5 +121,15 @@ public class AYT_SaveLessonData : MonoBehaviour
     private bool IsValidInput(int correct, int wrong, int empty, int totalQuestions)
     {
         return (correct + wrong + empty == totalQuestions) && (correct >= 0 && wrong >= 0 && empty >= 0);
+    }
+
+    private bool IsSectionFilled(int correct, int wrong, int empty)
+    {
+        return (correct > 0 || wrong > 0 || empty > 0);
+    }
+
+    private void ShowWarning(string message)
+    {
+        warningText.text = message;
     }
 }
