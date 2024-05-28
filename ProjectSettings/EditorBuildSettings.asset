@@ -23,4 +23,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Pomodoro_BM102/4.2_sonucgor.unity
     guid: e141adc97d0c95948b3de1b692781a53
+  - enabled: 1
+    path: Assets/Pomodoro_BM102/5.3_ssonuc.unity
+    guid: fd4b406d5fd9e1b438ea83eb2cfbaee6
+  - enabled: 1
+    path: Assets/Pomodoro_BM102/5.2_sensor.unity
+    guid: f08d217be63cadb4aa8f4ec9f593d82e
+  - enabled: 1
+    path: Assets/Pomodoro_BM102/5.1_anket.unity
+    guid: 4c159986fe1346c4f9e208a1ec4e6bcb
+  - enabled: 1
+    path: Assets/Pomodoro_BM102/5_stres.unity
+    guid: b0f28164d6112104e8760e863abf8ee2
   m_configObjects: {}
