@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 846496079}
   - component: {fileID: 846496078}
   m_Layer: 5
-  m_Name: Nabiz_Text (TMP)
+  m_Name: bpmText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 1233956423}
   - component: {fileID: 1233956422}
   m_Layer: 5
-  m_Name: Stres_Text (TMP) (1)
+  m_Name: stressLevelText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
