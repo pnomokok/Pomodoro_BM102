@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ResultSceneController : MonoBehaviour
 {
-    public Text bpmText;
-    public Text stressLevelText;
+    public TMP_Text bpmText;
+    public TMP_Text stressLevelText;
 
     void Start()
     {
