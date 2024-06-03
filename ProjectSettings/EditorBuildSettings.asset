@@ -5,37 +5,46 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Pomodoro_BM102/3_pomodoro.unity
     guid: 3dd3b17ef51545f40ae56b4add361405
-  - enabled: 1
+  - enabled: 0
     path: Assets/Pomodoro_BM102/2_motivasyon.unity
     guid: 4328d39d32e6e5040870617c5fd61fb4
-  - enabled: 1
+  - enabled: 0
     path: Assets/Pomodoro_BM102/4_deneme.unity
     guid: ec475ff0f0b61514e9ea32ccb3e891ad
   - enabled: 1
-    path: Assets/Pomodoro_BM102/4.1_tyt_sonucekle.unity
+    path: Assets/Pomodoro_BM102/RENK3_pomodoro.unity
+    guid: db302303ce2ee0b49953f3c299179ea9
+  - enabled: 1
+    path: Assets/Pomodoro_BM102/RENK4.1_tyt_sonucekle.unity
     guid: 5335b308e03e07a488159d34189c8b08
   - enabled: 1
-    path: Assets/Pomodoro_BM102/4.1_ayt_sonucekle.unity
+    path: Assets/Pomodoro_BM102/RENK4.1_ayt_sonucekle.unity
     guid: 526d091b5d3997a4dbfbc66d5b2e75b4
   - enabled: 1
-    path: Assets/Pomodoro_BM102/4.2_sonucgor.unity
+    path: Assets/Pomodoro_BM102/RENK4.2_sonucgor.unity
     guid: e141adc97d0c95948b3de1b692781a53
-  - enabled: 1
+  - enabled: 0
     path: Assets/Pomodoro_BM102/5.3_ssonuc.unity
     guid: fd4b406d5fd9e1b438ea83eb2cfbaee6
-  - enabled: 1
+  - enabled: 0
     path: Assets/Pomodoro_BM102/5.2_sensor.unity
     guid: f08d217be63cadb4aa8f4ec9f593d82e
   - enabled: 1
-    path: Assets/Pomodoro_BM102/5.1_anket.unity
+    path: Assets/Pomodoro_BM102/RENK5.1_anket.unity
     guid: 4c159986fe1346c4f9e208a1ec4e6bcb
   - enabled: 1
-    path: Assets/Pomodoro_BM102/RZ5.3_ssonuc.unity
+    path: Assets/Pomodoro_BM102/RENKRZ5.3_ssonuc.unity
     guid: 77f3cdd4d078b6346ad01c75a0fecddf
   - enabled: 1
-    path: Assets/Pomodoro_BM102/5_stres.unity
+    path: Assets/Pomodoro_BM102/RENK2_motivasyon.unity
+    guid: 827cbd0ef8495124c86b9ab7c49a10ab
+  - enabled: 1
+    path: Assets/Pomodoro_BM102/RENK4_deneme.unity
+    guid: dec2c2ebc2fffbd45903168bb04997f7
+  - enabled: 1
+    path: Assets/Pomodoro_BM102/RENK5_stres.unity
     guid: b0f28164d6112104e8760e863abf8ee2
   m_configObjects: {}

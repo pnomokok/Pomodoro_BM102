@@ -51,7 +51,7 @@ public class SuggestionManager : MonoBehaviour
     {
         if (stressLevel < 13.3)
         {
-            stressLevelText.text = "Düþük Stres Seviyesi";
+            stressLevelText.text = "Düsük Stres Seviyesi";
             suggestionText.text = GetRandomSuggestion(0);
         }
         else if (stressLevel < 26.5)

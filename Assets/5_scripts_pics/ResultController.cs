@@ -14,7 +14,7 @@ public class ResultController : MonoBehaviour
         int bpm = int.Parse(heartRate);
         if (bpm < 60)
         {
-            stressLevelText.text = "Stres seviyeniz: Düþük";
+            stressLevelText.text = "Stres seviyeniz: Düsük";
         }
         else if (bpm >= 60 && bpm < 90)
         {

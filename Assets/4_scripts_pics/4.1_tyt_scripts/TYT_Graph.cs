@@ -19,8 +19,11 @@ public class TYT_Graph : MonoBehaviour
         graphContainer = transform.Find("GraphContainer").GetComponent<RectTransform>();
         lineDrawer = graphContainer.gameObject.AddComponent<CustomLineDrawer>();
 
+        //// Çizgi rengini burada ayarlayýn
+        //lineDrawer.color = new Color32(0x1D, 0x26, 0x3B, 0xFF);  // #1D263B rengini ayarlayýn
+
         // Çizgi rengini burada ayarlayýn
-        lineDrawer.color = new Color32(0x1D, 0x26, 0x3B, 0xFF);  // #1D263B rengini ayarlayýn
+        lineDrawer.color = new Color32(0x78, 0x72, 0xDE, 0xFF);  // #7872DE rengini ayarlayýn
 
         if (TYT_DataManager.tytInstance != null && TYT_DataManager.tytInstance.tytLastFiveNets != null)
         {
