@@ -14,9 +14,21 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Pomodoro_BM102/4_deneme.unity
     guid: ec475ff0f0b61514e9ea32ccb3e891ad
+  - enabled: 0
+    path: Assets/Pomodoro_BM102/rrr4.1_tyt_sonucekle 1.unity
+    guid: 077592ec411554543bf9b95ebf642b65
+  - enabled: 0
+    path: Assets/Pomodoro_BM102/rrr4.1_ayt_sonucekle 1.unity
+    guid: ba8107cc97f6323459cd1adbf09597c6
+  - enabled: 0
+    path: Assets/Pomodoro_BM102/rrr4.2_sonucgor 1.unity
+    guid: e80e237cc44c9ad49822ddab9c995ae7
   - enabled: 1
     path: Assets/Pomodoro_BM102/RENK3_pomodoro.unity
     guid: db302303ce2ee0b49953f3c299179ea9
+  - enabled: 1
+    path: Assets/Pomodoro_BM102/RENK4_deneme.unity
+    guid: dec2c2ebc2fffbd45903168bb04997f7
   - enabled: 1
     path: Assets/Pomodoro_BM102/RENK4.1_tyt_sonucekle.unity
     guid: 5335b308e03e07a488159d34189c8b08
@@ -41,9 +53,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Pomodoro_BM102/RENK2_motivasyon.unity
     guid: 827cbd0ef8495124c86b9ab7c49a10ab
-  - enabled: 1
-    path: Assets/Pomodoro_BM102/RENK4_deneme.unity
-    guid: dec2c2ebc2fffbd45903168bb04997f7
   - enabled: 1
     path: Assets/Pomodoro_BM102/RENK5_stres.unity
     guid: b0f28164d6112104e8760e863abf8ee2

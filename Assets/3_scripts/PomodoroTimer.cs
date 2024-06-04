@@ -1,4 +1,3 @@
-
 //using UnityEngine;
 //using TMPro;
 //using UnityEngine.UI;
@@ -11,6 +10,7 @@
 
 //    public TextMeshProUGUI timerText;
 //    public TextMeshProUGUI setStatusText;
+//    public TextMeshProUGUI errorMessageText; // Hata mesajlarý için TextMeshPro alaný
 //    //public TextMeshProUGUI totalWorkTimeText; // Toplam çalýþma süresi için TextMeshPro alaný
 //    public Button startButton;
 //    public Button stopButton;
@@ -35,6 +35,10 @@
 //        stopButton.onClick.AddListener(StopTimer);
 //        resetButton.onClick.AddListener(ResetTimer);
 //        saveButton.onClick.AddListener(SaveSettings);
+
+//        workTimeInput.onValueChanged.AddListener(delegate { ValidateInputFields(); });
+//        breakTimeInput.onValueChanged.AddListener(delegate { ValidateInputFields(); });
+//        cycleCountInput.onValueChanged.AddListener(delegate { ValidateInputFields(); });
 
 //        manager.LoadSettings();
 //        LoadInputs();
@@ -125,6 +129,7 @@
 //            UpdateTimerText();
 //            UpdateProgressBar();
 //            UpdateSetStatusText();
+//            ClearErrorMessage(); // Reset iþleminde hata mesajýný temizle
 //        }
 //    }
 
@@ -132,13 +137,21 @@
 //    {
 //        if (manager != null)
 //        {
-//            float workTime = float.Parse(workTimeInput.text) * 60;
-//            float breakTime = float.Parse(breakTimeInput.text) * 60;
-//            int cycles = int.Parse(cycleCountInput.text);
+//            if (ValidateInputs())
+//            {
+//                float workTime = float.Parse(workTimeInput.text) * 60;
+//                float breakTime = float.Parse(breakTimeInput.text) * 60;
+//                int cycles = int.Parse(cycleCountInput.text);
 
-//            manager.SaveSettings(workTime, breakTime, cycles);
-//            manager.LoadSettings();
-//            ResetTimer();
+//                manager.SaveSettings(workTime, breakTime, cycles);
+//                manager.LoadSettings();
+//                ResetTimer();
+//                EnableButtons(true); // Giriþler geçerli olduðunda butonlarý etkinleþtir
+//            }
+//            else
+//            {
+//                EnableButtons(false); // Giriþler geçersiz olduðunda butonlarý devre dýþý býrak
+//            }
 //        }
 //    }
 
@@ -150,6 +163,61 @@
 //            breakTimeInput.text = (manager.breakTime / 60).ToString();
 //            cycleCountInput.text = manager.cycleCount.ToString();
 //        }
+//    }
+
+//    private void ValidateInputFields()
+//    {
+//        if (ValidateInputs())
+//        {
+//            ClearErrorMessage();
+//            EnableButtons(true); // Giriþler geçerli olduðunda butonlarý etkinleþtir
+//        }
+//        else
+//        {
+//            EnableButtons(false); // Giriþler geçersiz olduðunda butonlarý devre dýþý býrak
+//        }
+//    }
+
+//    private bool ValidateInputs()
+//    {
+//        ClearErrorMessage(); // Hata mesajýný temizle
+
+//        float workTime;
+//        float breakTime;
+//        int cycles;
+
+//        if (!float.TryParse(workTimeInput.text, out workTime) || !float.TryParse(breakTimeInput.text, out breakTime) || !int.TryParse(cycleCountInput.text, out cycles))
+//        {
+//            ShowErrorMessage("Geçersiz deðer girildi. Yalnýzca sayýsal deðerler kabul edilir.");
+//            return false;
+//        }
+
+//        if (workTime <= 0 || breakTime <= 0 || cycles <= 0)
+//        {
+//            ShowErrorMessage("Deðerler sýfýrdan büyük olmalýdýr.");
+//            return false;
+//        }
+
+//        return true;
+//    }
+
+//    private void ShowErrorMessage(string message)
+//    {
+//        errorMessageText.text = message;
+//        errorMessageText.gameObject.SetActive(true);
+//    }
+
+//    private void ClearErrorMessage()
+//    {
+//        errorMessageText.text = "";
+//        errorMessageText.gameObject.SetActive(false);
+//    }
+
+//    private void EnableButtons(bool enable)
+//    {
+//        startButton.interactable = enable;
+//        stopButton.interactable = enable;
+//        resetButton.interactable = enable;
 //    }
 
 //    private void UpdateTimerText()
@@ -184,15 +252,7 @@
 //        }
 //    }
 
-//    // private void UpdateTotalWorkTimeText()
-//    //{
-//    //    if (manager != null)
-//    //    {
-//    //        int totalMinutes = Mathf.FloorToInt(manager.totalWorkTime / 60F);
-//    //        int totalSeconds = Mathf.FloorToInt(manager.totalWorkTime % 60F);
-//    //        totalWorkTimeText.text = string.Format("Toplam Çalýþma Süresi: {0:00}:{1:00}", totalMinutes, totalSeconds);
-//    //    }
-//    //}
+
 
 //    private void OnApplicationPause(bool pauseStatus)
 //    {
@@ -217,6 +277,9 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement; // Sahne yönetimi için gerekli
+
+
 
 public class PomodoroTimer : MonoBehaviour
 {
@@ -257,6 +320,7 @@ public class PomodoroTimer : MonoBehaviour
         cycleCountInput.onValueChanged.AddListener(delegate { ValidateInputFields(); });
 
         manager.LoadSettings();
+        manager.LoadState();
         LoadInputs();
 
         UpdateTimerText();
@@ -345,6 +409,7 @@ public class PomodoroTimer : MonoBehaviour
             UpdateTimerText();
             UpdateProgressBar();
             UpdateSetStatusText();
+            UpdateSetStatusText();// clearýn altýna da gelebilir
             ClearErrorMessage(); // Reset iþleminde hata mesajýný temizle
         }
     }
@@ -468,32 +533,48 @@ public class PomodoroTimer : MonoBehaviour
         }
     }
 
-    // private void UpdateTotalWorkTimeText()
+
+
+    //private void OnApplicationPause(bool pauseStatus)
     //{
     //    if (manager != null)
     //    {
-    //        int totalMinutes = Mathf.FloorToInt(manager.totalWorkTime / 60F);
-    //        int totalSeconds = Mathf.FloorToInt(manager.totalWorkTime % 60F);
-    //        totalWorkTimeText.text = string.Format("Toplam Çalýþma Süresi: {0:00}:{1:00}", totalMinutes, totalSeconds);
+    //        if (pauseStatus)
+    //        {
+    //            manager.SaveState();
+    //        }
+    //        else
+    //        {
+    //            manager.LoadState();
+    //            UpdateTimerText();
+    //            UpdateProgressBar();
+    //            UpdateSetStatusText();
+    //            // UpdateTotalWorkTimeText(); // Uygulama geri geldiðinde toplam çalýþma süresini güncelle
+    //        }
     //    }
     //}
-
     private void OnApplicationPause(bool pauseStatus)
     {
         if (manager != null)
         {
             if (pauseStatus)
             {
-                manager.SaveState();
-            }
-            else
-            {
-                manager.LoadState();
+                manager.LoadState(); // Kaydedilmiþ zamanlayýcý durumunu yükle
                 UpdateTimerText();
                 UpdateProgressBar();
                 UpdateSetStatusText();
-                // UpdateTotalWorkTimeText(); // Uygulama geri geldiðinde toplam çalýþma süresini güncelle
             }
+        }
+    }
+
+
+
+
+    private void OnDisable()
+    {
+        if (manager != null)
+        {
+            manager.SaveState();
         }
     }
 }

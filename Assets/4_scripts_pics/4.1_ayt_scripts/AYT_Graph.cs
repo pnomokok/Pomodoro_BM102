@@ -26,10 +26,13 @@ public class AYT_Graph : MonoBehaviour
         lineDrawer.color = new Color32(0x78, 0x72, 0xDE, 0xFF);  // #7872DE rengini ayarlayýn
 
 
-        if (AYT_DataManager.aytInstance != null && AYT_DataManager.aytInstance.aytLastFiveNets != null)
-        {
-            UpdateGraph(AYT_DataManager.aytInstance.aytLastFiveNets);
-        }
+        //if (AYT_DataManager.aytInstance != null && AYT_DataManager.aytInstance.aytLastFiveNets != null)
+        //{
+        //    Debug.Log("Graph update called with data: " + string.Join(", ", TYT_DataManager.tytInstance.tytLastFiveNets)); // Debug log
+
+        //    UpdateGraph(AYT_DataManager.aytInstance.aytLastFiveNets);
+        //}
+        RefreshGraph();
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
@@ -96,5 +99,17 @@ public class AYT_Graph : MonoBehaviour
 
         lineDrawer.points = positions;
         lineDrawer.SetVerticesDirty();  // Çizgiyi yeniden çizmeyi tetikle
+    }
+    public void RefreshGraph()
+    {
+        if (AYT_DataManager.aytInstance != null && AYT_DataManager.aytInstance.aytLastFiveNets != null)
+        {
+            Debug.Log("Graph update called with data: " + string.Join(", ", AYT_DataManager.aytInstance.aytLastFiveNets));
+            UpdateGraph(AYT_DataManager.aytInstance.aytLastFiveNets);
+        }
+        else
+        {
+            Debug.LogError("AYT_DataManager.aytInstance or aytLastFiveNets is null");
+        }
     }
 }

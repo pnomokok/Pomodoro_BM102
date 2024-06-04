@@ -1,6 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+
 
 public class SuggestionManager : MonoBehaviour
 {
@@ -12,32 +13,36 @@ public class SuggestionManager : MonoBehaviour
     {
         new string[]
         {
-            "G�nl�k y�r�y�� yaparak stres seviyeni d���k tut.",
-            "Hobilerinle ilgilen, �rne�in kitap okumak veya m�zik dinlemek.",
-            "G�nl�k meditasyon yap.",
-            "D�zenli nefes egzersizleri yap.",
-            "Gev�eme teknikleri ��ren ve uygula.",
-            "Sosyal etkinliklere kat�l ve arkada�lar�nla zaman ge�ir."
+            "Egzersiz Yapın: Hafif tempolu yürüyüş veya yoga gibi aktiviteler stres hormonlarını azaltır ve ruh halinizi iyileştirir.",
+            "Meditasyon ve Derin Nefes Alma Egzersizleri: Bu teknikler sakinleşmeye yardımcı olur ve stresi azaltır.",
+            "Doğada Zaman Geçirin: Doğada vakit geçirmek zihinsel sağlık üzerinde olumlu etkiler yapar.",
+            "Sanatsal Aktiviteler: Resim yapmak, müzik dinlemek veya enstrüman çalmak zihninizi meşgul ederek stresi azaltır.",
+            "Dengeli Beslenme: Sağlıklı bir diyet stresi yönetmede önemli bir rol oynar. Örneğin, avokado ve ceviz gibi besinler ruh halini düzenler.",
+            "Günlük Tutma: Duygularınızı yazıya dökmek stresin etkilerini hafifletebilir.",
+            "Hobilerle Uğraşın: Keyif aldığınız aktivitelerle meşgul olmak stres seviyenizi düşük tutar.",
+            "Kısa Molalar Verin: Düzenli aralıklarla kısa molalar vermek zihinsel yorgunluğu azaltır."
         },
         new string[]
         {
-            "15-20 dakikal�k hafif egzersiz yap.",
-            "Derin nefes egzersizleri yaparak rahatla.",
-            "Zaman y�netimi tekniklerini kullan.",
-            "Dengeli ve sa�l�kl� beslenmeye �zen g�ster.",
-            "Yeterli uyku almaya dikkat et.",
-            "K�sa molalar ver ve gev�eme aktiviteleri yap.",
-            "Do�ada vakit ge�ir, y�r�y��e ��k."
+            "Düzenli Uyku: Yeterli uyku almak, vücudunuzu ve zihninizi yenileyerek stresle başa çıkmanıza yardımcı olur.",
+            "Fiziksel Aktiviteyi Arttırın: Koşu, yüzme gibi daha yoğun egzersizler stres hormonlarını azaltır ve endorfin salgılar.",
+            "Sosyal Bağlantılar: Aile ve arkadaşlarla zaman geçirmek, destek sisteminizi güçlendirir ve stresle başa çıkmayı kolaylaştırır.",
+            "Biofeedback ve Gevşeme Teknikleri: Vücut fonksiyonlarını kontrol etmeyi öğrenmek stres yönetiminde etkili olabilir.",
+            "Rutin Oluşturma: Günlük bir rutin oluşturmak, belirsizlikleri azaltır ve stresi kontrol altında tutar.",
+            "Hafif Streching ve Yoga: Bu aktiviteler fiziksel ve zihinsel gevşemeyi teşvik eder.",
+            "Destek Gruplarına Katılın: Benzer deneyimlere sahip insanlarla iletişim kurmak, stresin etkilerini hafifletebilir.",
+            "Kendinize Zaman Ayırın: Gün içinde kendinize dinlenme ve yenilenme zamanı ayırmak stresle başa çıkmanıza yardımcı olur."
         },
         new string[]
         {
-            "Yoga veya pilates gibi rahatlama egzersizleri yap.",
-            "D��ar� ��k�p do�ada vakit ge�ir.",
-            "Kafein ve �eker t�ketimini azalt.",
-            "Profesyonel yard�m almay� d���n.",
-            "Aile veya arkada�lar�nla konu�arak duygular�n� payla�.",
-            "M�zik dinleyerek veya resim yaparak stresini azalt.",
-            "Rahatlama tekniklerini d�zenli olarak uygula."
+            "Profesyonel Yardım Alın: Terapi veya danışmanlık, stres yönetiminde çok etkili olabilir.",
+            "Yoğun Egzersiz: Daha yoğun fiziksel aktiviteler (örneğin, ağırlık kaldırma) stresi azaltmada etkili olabilir.",
+            "Mindfulness ve Meditasyon: Bu teknikler, yüksek stres seviyelerinde bile zihninizi sakinleştirir.",
+            "Derin Nefes Alma Egzersizleri: Nefes egzersizleri vücut ve zihin üzerinde hızlı bir rahatlama etkisi yaratır.",
+            "Eğlenceli Aktiviteler: Sevdiğiniz bir aktiviteyle meşgul olmak, yoğun stres altında bile rahatlamanıza yardımcı olabilir.",
+            "Kafein ve Alkol Tüketimini Azaltın: Bu maddeler stres seviyelerini arttırabilir, bu yüzden tüketimi sınırlamak önemlidir.",
+            "Zaman Yönetimi: Görevlerinizi önceliklendirmek ve yönetmek, stres seviyenizi azaltır.",
+            "Stresi Azaltan Takviyeler: Melatonin, Ashwagandha ve B vitaminleri gibi takviyeler, stresle başa çıkmada yardımcı olabilir."
         }
     };
 
@@ -51,7 +56,7 @@ public class SuggestionManager : MonoBehaviour
     {
         if (stressLevel < 13.3)
         {
-            stressLevelText.text = "D�s�k Stres Seviyesi";
+            stressLevelText.text = "Düşük Stres Seviyesi";
             suggestionText.text = GetRandomSuggestion(0);
         }
         else if (stressLevel < 26.5)
@@ -61,7 +66,7 @@ public class SuggestionManager : MonoBehaviour
         }
         else
         {
-            stressLevelText.text = "Y�ksek Stres Seviyesi";
+            stressLevelText.text = "Yüksek Stres Seviyesi";
             suggestionText.text = GetRandomSuggestion(2);
         }
     }
@@ -78,4 +83,3 @@ public class SuggestionManager : MonoBehaviour
         DisplaySuggestions(SurveyData.totalScore);
     }
 }
-

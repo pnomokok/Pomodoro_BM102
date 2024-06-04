@@ -5,6 +5,7 @@ using TMPro;  // TextMeshPro kullanýmý için
 
 public class TYT_Graph : MonoBehaviour
 {
+   
     [SerializeField] private Sprite circleSprite;
     [SerializeField] private GameObject linePrefab;  // Çizgi prefab'ý referansý
     [SerializeField] private GameObject textPrefab;  // Metin prefab'ý referansý
@@ -25,10 +26,8 @@ public class TYT_Graph : MonoBehaviour
         // Çizgi rengini burada ayarlayýn
         lineDrawer.color = new Color32(0x78, 0x72, 0xDE, 0xFF);  // #7872DE rengini ayarlayýn
 
-        if (TYT_DataManager.tytInstance != null && TYT_DataManager.tytInstance.tytLastFiveNets != null)
-        {
-            UpdateGraph(TYT_DataManager.tytInstance.tytLastFiveNets);
-        }
+        
+        RefreshGraph();
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
@@ -95,5 +94,17 @@ public class TYT_Graph : MonoBehaviour
 
         lineDrawer.points = positions;
         lineDrawer.SetVerticesDirty();  // Çizgiyi yeniden çizmeyi tetikle
+    }
+    public void RefreshGraph()
+    {
+        if (TYT_DataManager.tytInstance != null && TYT_DataManager.tytInstance.tytLastFiveNets != null)
+        {
+            Debug.Log("Graph update called with data: " + string.Join(", ", TYT_DataManager.tytInstance.tytLastFiveNets));
+            UpdateGraph(TYT_DataManager.tytInstance.tytLastFiveNets);
+        }
+        else
+        {
+            Debug.LogError("TYT_DataManager.tytInstance or tytLastFiveNets is null");
+        }
     }
 }

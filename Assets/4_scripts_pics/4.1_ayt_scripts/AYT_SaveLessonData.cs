@@ -103,6 +103,9 @@ public class AYT_SaveLessonData : MonoBehaviour
             - (aytLessonData.aytSos1WrongAnswers + aytLessonData.aytSos2WrongAnswers + aytLessonData.aytMatematikWrongAnswers + aytLessonData.aytFenWrongAnswers) / 4.0f;
 
         AYT_DataManager.aytInstance.AddNet(ayt_ToplamNet);
+
+        Debug.Log("Net added: " + ayt_ToplamNet); // Debug log
+
         warningText.text = ""; // Uyarý mesajýný temizle
     }
 

@@ -71,6 +71,9 @@ public class TYT_SaveLessonData : MonoBehaviour
             - (tytLessonData.tytTurkceWrongAnswers + tytLessonData.tytSosyalWrongAnswers + tytLessonData.tytMatematikWrongAnswers + tytLessonData.tytFenWrongAnswers) / 4.0f;
 
         TYT_DataManager.tytInstance.AddNet(tyt_ToplamNet);
+
+        Debug.Log("Net added: " + tyt_ToplamNet); // Debug log
+
         warningText.text = ""; // Uyarý mesajýný temizle
     }
 
