@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentQuestion: 1
   questionsList:
-  - question: hey
-    isTrue: 1
-    questioned: 0
   - question: how
     isTrue: 0
-    questioned: 0
+    questioned: 1
   - question: are
     isTrue: 1
-    questioned: 0
+    questioned: 1
+  - question: you
+    isTrue: 0
+    questioned: 1
