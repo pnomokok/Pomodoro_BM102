@@ -50,7 +50,7 @@ public class SensorController : MonoBehaviour
                 PlayerPrefs.SetInt("HeartRate", heartRate);
                 PlayerPrefs.Save(); // Deðiþiklikleri hemen diske yaz
                 Debug.Log("Nabýz verisi kaydedildi: " + heartRate);
-                UnityEngine.SceneManagement.SceneManager.LoadScene("RENKRZ5.3_ssonuc"); // BURASI DEÐÝÞEBÝLÝR !!!
+                UnityEngine.SceneManagement.SceneManager.LoadScene("RENK5.4_ssonuc"); // BURASI DEÐÝÞEBÝLÝR !!!
             }
             else
             {
