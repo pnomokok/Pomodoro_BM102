@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class ResultManager : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class ResultManager : MonoBehaviour
 
     void Start()
     {
-        resultText.text = SurveyData.totalScore.ToString();
+        int score = Convert.ToInt32(SurveyData.totalScore * 85.0f / 21.0f);// %100 cýkmasý onaylanmadý
+         resultText.text = (score).ToString() + "%";
+       
     }
 }
+

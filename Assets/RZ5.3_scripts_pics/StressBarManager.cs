@@ -21,6 +21,7 @@ public class StressBarManager : MonoBehaviour
         // Kullanýcýnýn anketten aldýðý toplam skor
         int totalScore = SurveyData.totalScore;
 
+
         // Stres barý üzerinde skoru göster
         UpdateStressBar(totalScore);
     }

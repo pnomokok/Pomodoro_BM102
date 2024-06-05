@@ -50,13 +50,14 @@ public class SuggestionManager : MonoBehaviour
     {
         refreshButton.onClick.AddListener(RefreshSuggestions);
         DisplaySuggestions(SurveyData.totalScore);
+        
     }
 
-    void DisplaySuggestions(int stressLevel)
+    void DisplaySuggestions(float stressLevel)
     {
         if (stressLevel < 13.3)
         {
-            stressLevelText.text = "Düşük Stres Seviyesi";
+            stressLevelText.text = "Düsük Stres Seviyesi";
             suggestionText.text = GetRandomSuggestion(0);
         }
         else if (stressLevel < 26.5)
@@ -64,11 +65,7 @@ public class SuggestionManager : MonoBehaviour
             stressLevelText.text = "Orta Stres Seviyesi";
             suggestionText.text = GetRandomSuggestion(1);
         }
-        else
-        {
-            stressLevelText.text = "Yüksek Stres Seviyesi";
-            suggestionText.text = GetRandomSuggestion(2);
-        }
+
     }
 
     string GetRandomSuggestion(int index)
@@ -81,5 +78,8 @@ public class SuggestionManager : MonoBehaviour
     void RefreshSuggestions()
     {
         DisplaySuggestions(SurveyData.totalScore);
+        
     }
 }
+
+
