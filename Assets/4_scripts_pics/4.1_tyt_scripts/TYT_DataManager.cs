@@ -32,11 +32,11 @@ public class TYT_DataManager : MonoBehaviour
 
     public void SaveData()
     {
-        PlayerPrefs.SetInt("NetCount", tytLastFiveNets.Count);
+        PlayerPrefs.SetInt("TYT_NetCount", tytLastFiveNets.Count);
         for (int i = 0; i < tytLastFiveNets.Count; i++)
         {
-            PlayerPrefs.SetFloat("Net" + i, tytLastFiveNets[i]);
-            Debug.Log("Saved Net" + i + ": " + tytLastFiveNets[i]);
+            PlayerPrefs.SetFloat("TYT_Net" + i, tytLastFiveNets[i]);
+            Debug.Log("Saved TYT_Net" + i + ": " + tytLastFiveNets[i]);
         }
         PlayerPrefs.Save();
         Debug.Log("Data saved");
@@ -45,18 +45,18 @@ public class TYT_DataManager : MonoBehaviour
     public void LoadData()
     {
         tytLastFiveNets.Clear();
-        int count = PlayerPrefs.GetInt("NetCount", 0);
-        Debug.Log("Loading data. NetCount: " + count);
+        int count = PlayerPrefs.GetInt("TYT_NetCount", 0);
+        Debug.Log("Loading data. TYT_NetCount: " + count);
         for (int i = 0; i < count; i++)
         {
             //tytLastFiveNets.Add(PlayerPrefs.GetFloat("Net" + i, 0));
 
-            float value = PlayerPrefs.GetFloat("Net" + i, 0);
+            float value = PlayerPrefs.GetFloat("TYT_Net" + i, 0);
 
             tytLastFiveNets.Add(value);
-            Debug.Log("Loaded Net" + i + ": " + value);
+            Debug.Log("Loaded TYT_Net" + i + ": " + value);
         }
         // Verify if data is loaded correctly
-        Debug.Log("Total Nets Loaded: " + string.Join(", ", tytLastFiveNets));
+        Debug.Log("Total TYT_Nets Loaded: " + string.Join(", ", tytLastFiveNets));
     }
 }
