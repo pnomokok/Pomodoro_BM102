@@ -11,33 +11,26 @@ public class ResultController : MonoBehaviour
         int heartRate = PlayerPrefs.GetInt("HeartRate");
         heartRateText.text = heartRate + " BPM";
 
-        if (heartRate < 80)
-            stressLevelText.text = "Düþük stres seviyesi";
-        else if (heartRate < 100)
-            stressLevelText.text = "Orta stres seviyesi";
+        if (heartRate > 0)
+        {
+            string stressLevel = GetStressLevel(heartRate);
+            stressLevelText.text = "Stres seviyeniz: " + stressLevel;
+        }
         else
-            stressLevelText.text = "Yüksek stres seviyesi";
-
-        //if (heartRate > 0)
-        //{
-        //    string stressLevel = GetStressLevel(heartRate);
-        //    //stressLevelText.text = "Stres seviyeniz: " + stressLevel;
-        //}
-        //else
-        //{
-        //    //stressLevelText.text = "Geçersiz nabýz deðeri.";
-        //}
+        {
+            stressLevelText.text = "Geçersiz nabýz deðeri.";
+        }
     }
 
-    //string GetStressLevel(int heartRate)
-    //{
-    //    if (heartRate < 50)
-    //        return "Ölçüm esnasýnda parmaðýnýzý kaldýrmayýn ve tekrar deneyin.";
-    //    else if (heartRate < 80)
-    //        return "Düþük stres seviyesi";
-    //    else if (heartRate < 100)
-    //        return "Orta stres seviyesi";
-    //    else
-    //        return "Yüksek stres seviyesi";
-    //}
+    string GetStressLevel(int heartRate)
+    {
+        if (heartRate < 50)
+            return "Ölçüm esnasýnda parmaðýnýzý kaldýrmayýn ve tekrar deneyin.";
+        else if (heartRate < 80)
+            return "Düþük stres seviyesi";
+        else if (heartRate < 100)
+            return "Orta stres seviyesi";
+        else
+            return "Yüksek stres seviyesi";
+    }
 }

@@ -39,8 +39,14 @@ EditorBuildSettings:
     path: Assets/Pomodoro_BM102/RENK4.1_ayt_sonucekle.unity
     guid: 526d091b5d3997a4dbfbc66d5b2e75b4
   - enabled: 1
+    path: Assets/Pomodoro_BM102/6.2GameXScene.unity
+    guid: 4aa116f52f528456eb3f737dfe0843dc
+  - enabled: 1
     path: Assets/Pomodoro_BM102/RENK4.2_sonucgor.unity
     guid: e141adc97d0c95948b3de1b692781a53
+  - enabled: 1
+    path: Assets/Pomodoro_BM102/1.2_truefalse.unity
+    guid: ac4a0a47c94db434d8f2dbc7ab715148
   - enabled: 0
     path: Assets/Pomodoro_BM102/5.3_ssonuc.unity
     guid: fd4b406d5fd9e1b438ea83eb2cfbaee6
@@ -59,10 +65,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Pomodoro_BM102/RENK5_stres.unity
     guid: b0f28164d6112104e8760e863abf8ee2
-  - enabled: 1
-    path: Assets/Pomodoro_BM102/RENK5.2_sensor.unity
-    guid: 1b76d8f98376ee0479661f076cd490a3
-  - enabled: 1
-    path: Assets/Pomodoro_BM102/RENK5.4_ssonuc.unity
-    guid: 14ca346a176d00d4ca387253d4bdb86d
   m_configObjects: {}
