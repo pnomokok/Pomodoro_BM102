@@ -1,129 +1,70 @@
-
-
-//using UnityEngine;
-//using UnityEngine.UI;
-
-//public class GameManager : MonoBehaviour
-//{
-//    public Player player;
-//    public Text scoreText;
-//    public GameObject playButton;
-//    public GameObject gameOver;
-//    public GameObject exitButton; // Exit butonunu ekleyin
-
-//    private int score;
-
-//    private void Awake()
-//    {
-//        Application.targetFrameRate = 60;
-
-//        // Game Over ve Exit butonlarýný devre dýþý býrak
-//        gameOver.SetActive(false);
-//        exitButton.SetActive(true); 
-
-//        Pause();
-//    }
-
-//    public void Play()
-//    {
-//        score = 0;
-//        scoreText.text = score.ToString();
-
-//        playButton.SetActive(false);
-//        gameOver.SetActive(false);
-//        exitButton.SetActive(false); // Exit butonunu devre dýþý býrak
-
-//        Time.timeScale = 1f;
-//        player.enabled = true;
-
-//        Pipes[] pipes = FindObjectsOfType<Pipes>();
-
-//        for (int i = 0; i < pipes.Length; i++)
-//        {
-//            Destroy(pipes[i].gameObject);
-//        }
-//    }
-
-//    public void GameOver()
-//    {
-//        playButton.SetActive(true);
-//        gameOver.SetActive(true);
-//        exitButton.SetActive(true); // Exit butonunu göster
-
-//        Pause();
-//    }
-
-//    public void Pause()
-//    {
-//        Time.timeScale = 0f;
-//        player.enabled = false;
-//    }
-
-//    public void IncreaseScore()
-//    {
-//        score++;
-//        scoreText.text = score.ToString();
-//    }
-//}
-
-
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    // Oyuncu ve UI elemanlarÄ± referanslarÄ±
     public Player player;
     public Text scoreText;
-    public Text bestScoreText; // En iyi skoru gösterecek Text
+    public Text bestScoreText; // En iyi skoru gÃ¶sterecek Text
     public GameObject playButton;
     public GameObject gameOver;
     public GameObject exitButton;
 
+    // Oyun skorlarÄ±
     private int score;
     private int bestScore;
 
     private void Awake()
     {
+        // Uygulama hedef kare hÄ±zÄ±nÄ± ayarla
         Application.targetFrameRate = 60;
 
-        // Game Over ve Exit butonlarýný devre dýþý býrak
+        // Game Over ve Exit butonlarÄ±nÄ± devre dÄ±ÅŸÄ± bÄ±rak
         gameOver.SetActive(false);
         exitButton.SetActive(true);
 
-        // En iyi skoru yükle
+        // En iyi skoru yÃ¼kle
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
         bestScoreText.text = "Best: " + bestScore;
 
+        // Oyunu durdur
         Pause();
     }
 
+    // Oyunu baÅŸlat
     public void Play()
     {
+        // Skoru sÄ±fÄ±rla ve gÃ¼ncelle
         score = 0;
         scoreText.text = score.ToString();
 
+        // ButonlarÄ± ve Game Over ekranÄ±nÄ± gizle
         playButton.SetActive(false);
         gameOver.SetActive(false);
         exitButton.SetActive(false);
 
+        // Oyunu baÅŸlat
         Time.timeScale = 1f;
         player.enabled = true;
 
+        // TÃ¼m borularÄ± bul ve yok et
         Pipes[] pipes = FindObjectsOfType<Pipes>();
-
         for (int i = 0; i < pipes.Length; i++)
         {
             Destroy(pipes[i].gameObject);
         }
     }
 
+    // Oyun bitiÅŸ iÅŸlemleri
     public void GameOver()
     {
+        // ButonlarÄ± ve Game Over ekranÄ±nÄ± gÃ¶ster
         playButton.SetActive(true);
         gameOver.SetActive(true);
         exitButton.SetActive(true);
 
-        // En iyi skoru güncelle
+        // En iyi skoru gÃ¼ncelle
         if (score > bestScore)
         {
             bestScore = score;
@@ -131,16 +72,21 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.Save();
         }
 
-        bestScoreText.text = "Best: " + bestScore; // En iyi skoru güncelle
+        // En iyi skoru ekranda gÃ¼ncelle
+        bestScoreText.text = "Best: " + bestScore;
+        
+        // Oyunu durdur
         Pause();
     }
 
+    // Oyunu durdur
     public void Pause()
     {
         Time.timeScale = 0f;
         player.enabled = false;
     }
 
+    // Skoru arttÄ±r ve ekranda gÃ¼ncelle
     public void IncreaseScore()
     {
         score++;
