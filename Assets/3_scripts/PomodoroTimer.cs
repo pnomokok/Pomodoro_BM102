@@ -1,304 +1,25 @@
-//using UnityEngine;
-//using TMPro;
-//using UnityEngine.UI;
-
-//public class PomodoroTimer : MonoBehaviour
-//{
-//    public TMP_InputField workTimeInput;
-//    public TMP_InputField breakTimeInput;
-//    public TMP_InputField cycleCountInput;
-
-//    public TextMeshProUGUI timerText;
-//    public TextMeshProUGUI setStatusText;
-//    public TextMeshProUGUI errorMessageText; // Hata mesajlarý için TextMeshPro alaný
-//    //public TextMeshProUGUI totalWorkTimeText; // Toplam çalýþma süresi için TextMeshPro alaný
-//    public Button startButton;
-//    public Button stopButton;
-//    public Button resetButton;
-//    public Button saveButton;
-
-//    public Image progressBar;
-
-//    private PomodoroManager manager;
-
-//    private void Start()
-//    {
-//        manager = PomodoroManager.Instance;
-
-//        if (manager == null)
-//        {
-//            Debug.LogError("PomodoroManager instance is not found.");
-//            return;
-//        }
-
-//        startButton.onClick.AddListener(StartTimer);
-//        stopButton.onClick.AddListener(StopTimer);
-//        resetButton.onClick.AddListener(ResetTimer);
-//        saveButton.onClick.AddListener(SaveSettings);
-
-//        workTimeInput.onValueChanged.AddListener(delegate { ValidateInputFields(); });
-//        breakTimeInput.onValueChanged.AddListener(delegate { ValidateInputFields(); });
-//        cycleCountInput.onValueChanged.AddListener(delegate { ValidateInputFields(); });
-
-//        manager.LoadSettings();
-//        LoadInputs();
-
-//        UpdateTimerText();
-//        UpdateProgressBar();
-//        UpdateSetStatusText();
-//        //UpdateTotalWorkTimeText(); // Baþlangýçta toplam çalýþma süresini güncelle
-//    }
-
-//    private void Update()
-//    {
-//        if (manager == null)
-//        {
-//            return;
-//        }
-
-//        if (manager.timerRunning)
-//        {
-//            manager.currentTime -= Time.deltaTime;
-
-//            if (manager.isWorking)
-//            {
-//                manager.totalWorkTime += Time.deltaTime; // Toplam çalýþma süresini güncelle
-//                Debug.Log("toplam calýsma süresi: " + manager.totalWorkTime);
-//                // UpdateTotalWorkTimeText(); // Ekranda toplam çalýþma süresini güncelle
-//            }
-
-//            if (manager.currentTime <= 0)
-//            {
-//                if (manager.isWorking)
-//                {
-//                    manager.currentCycle++;
-//                    if (manager.currentCycle >= manager.cycleCount)
-//                    {
-//                        manager.timerRunning = false;
-//                        timerText.text = "Done!";
-//                        progressBar.fillAmount = 1;
-//                        setStatusText.text = "Completed";
-//                        return;
-//                    }
-//                    manager.isWorking = false;
-//                    manager.currentTime = manager.breakTime;
-//                }
-//                else
-//                {
-//                    manager.isWorking = true;
-//                    manager.currentTime = manager.workTime;
-//                }
-//            }
-
-//            UpdateTimerText();
-//            UpdateProgressBar();
-//            UpdateSetStatusText();
-//        }
-//    }
-
-//    private void StartTimer()
-//    {
-//        if (manager != null && !manager.timerRunning)
-//        {
-//            if (manager.currentTime <= 0)
-//            {
-//                manager.currentTime = manager.isWorking ? manager.workTime : manager.breakTime;
-//            }
-//            manager.timerRunning = true;
-//            UpdateProgressBar();
-//            UpdateSetStatusText();
-//        }
-//    }
-
-//    private void StopTimer()
-//    {
-//        if (manager != null)
-//        {
-//            manager.timerRunning = false;
-//        }
-//    }
-
-//    private void ResetTimer()
-//    {
-//        if (manager != null)
-//        {
-//            manager.timerRunning = false;
-//            manager.currentTime = manager.workTime;
-//            manager.currentCycle = 0;
-//            manager.isWorking = true;
-//            UpdateTimerText();
-//            UpdateProgressBar();
-//            UpdateSetStatusText();
-//            ClearErrorMessage(); // Reset iþleminde hata mesajýný temizle
-//        }
-//    }
-
-//    private void SaveSettings()
-//    {
-//        if (manager != null)
-//        {
-//            if (ValidateInputs())
-//            {
-//                float workTime = float.Parse(workTimeInput.text) * 60;
-//                float breakTime = float.Parse(breakTimeInput.text) * 60;
-//                int cycles = int.Parse(cycleCountInput.text);
-
-//                manager.SaveSettings(workTime, breakTime, cycles);
-//                manager.LoadSettings();
-//                ResetTimer();
-//                EnableButtons(true); // Giriþler geçerli olduðunda butonlarý etkinleþtir
-//            }
-//            else
-//            {
-//                EnableButtons(false); // Giriþler geçersiz olduðunda butonlarý devre dýþý býrak
-//            }
-//        }
-//    }
-
-//    private void LoadInputs()
-//    {
-//        if (manager != null)
-//        {
-//            workTimeInput.text = (manager.workTime / 60).ToString();
-//            breakTimeInput.text = (manager.breakTime / 60).ToString();
-//            cycleCountInput.text = manager.cycleCount.ToString();
-//        }
-//    }
-
-//    private void ValidateInputFields()
-//    {
-//        if (ValidateInputs())
-//        {
-//            ClearErrorMessage();
-//            EnableButtons(true); // Giriþler geçerli olduðunda butonlarý etkinleþtir
-//        }
-//        else
-//        {
-//            EnableButtons(false); // Giriþler geçersiz olduðunda butonlarý devre dýþý býrak
-//        }
-//    }
-
-//    private bool ValidateInputs()
-//    {
-//        ClearErrorMessage(); // Hata mesajýný temizle
-
-//        float workTime;
-//        float breakTime;
-//        int cycles;
-
-//        if (!float.TryParse(workTimeInput.text, out workTime) || !float.TryParse(breakTimeInput.text, out breakTime) || !int.TryParse(cycleCountInput.text, out cycles))
-//        {
-//            ShowErrorMessage("Geçersiz deðer girildi. Yalnýzca sayýsal deðerler kabul edilir.");
-//            return false;
-//        }
-
-//        if (workTime <= 0 || breakTime <= 0 || cycles <= 0)
-//        {
-//            ShowErrorMessage("Deðerler sýfýrdan büyük olmalýdýr.");
-//            return false;
-//        }
-
-//        return true;
-//    }
-
-//    private void ShowErrorMessage(string message)
-//    {
-//        errorMessageText.text = message;
-//        errorMessageText.gameObject.SetActive(true);
-//    }
-
-//    private void ClearErrorMessage()
-//    {
-//        errorMessageText.text = "";
-//        errorMessageText.gameObject.SetActive(false);
-//    }
-
-//    private void EnableButtons(bool enable)
-//    {
-//        startButton.interactable = enable;
-//        stopButton.interactable = enable;
-//        resetButton.interactable = enable;
-//    }
-
-//    private void UpdateTimerText()
-//    {
-//        if (manager != null)
-//        {
-//            int minutes = Mathf.FloorToInt(manager.currentTime / 60F);
-//            int seconds = Mathf.FloorToInt(manager.currentTime % 60F);
-//            timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-//        }
-//    }
-
-//    private void UpdateProgressBar()
-//    {
-//        if (manager != null)
-//        {
-//            float totalTime = manager.isWorking ? manager.workTime : manager.breakTime;
-//            progressBar.fillAmount = manager.currentTime / totalTime;
-//        }
-//    }
-
-//    private void UpdateSetStatusText()
-//    {
-//        if (manager != null)
-//        {
-//            string status = manager.isWorking ? "DERS" : "MOLA";
-//            string setText = (manager.currentCycle == 0 && !manager.timerRunning && !manager.isWorking)
-//                ? "HAZIRSAN BASLA"
-//                : $"{manager.currentCycle + (manager.isWorking ? 1 : 0)}. SET {status}";
-
-//            setStatusText.text = setText;
-//        }
-//    }
-
-
-
-//    private void OnApplicationPause(bool pauseStatus)
-//    {
-//        if (manager != null)
-//        {
-//            if (pauseStatus)
-//            {
-//                manager.SaveState();
-//            }
-//            else
-//            {
-//                manager.LoadState();
-//                UpdateTimerText();
-//                UpdateProgressBar();
-//                UpdateSetStatusText();
-//                // UpdateTotalWorkTimeText(); // Uygulama geri geldiðinde toplam çalýþma süresini güncelle
-//            }
-//        }
-//    }
-//}
-
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; // Sahne yönetimi için gerekli
-
-
+using UnityEngine.SceneManagement;
 
 public class PomodoroTimer : MonoBehaviour
 {
-    public TMP_InputField workTimeInput;
+    public TMP_InputField workTimeInput;  //Kullanýcýdan girdi alabilmek için oluþturduðumuz ögeler.
     public TMP_InputField breakTimeInput;
     public TMP_InputField cycleCountInput;
 
-    public TextMeshProUGUI timerText;
-    public TextMeshProUGUI setStatusText;
+    public TextMeshProUGUI timerText;   //Zamanlayýcýnýn text ögesi.
+    public TextMeshProUGUI setStatusText;   //Kullanýcýnýn ders çalýþma süresi içinde mi yoksa mola süresi içerisinde mi olduðunu gösteren text ögemiz.
     public TextMeshProUGUI errorMessageText; // Hata mesajlarý için TextMeshPro alaný
-    //public TextMeshProUGUI totalWorkTimeText; // Toplam çalýþma süresi için TextMeshPro alaný
-    public Button startButton;
+    public Button startButton;  //Zamanlayýcýnýn iþlevselliði için eklenen oynat, durdur, yenile butonlarý.
     public Button stopButton;
     public Button resetButton;
-    public Button saveButton;
+    public Button saveButton;   //Girdileri kaydetmek için kullanýlan buton.
 
-    public Image progressBar;
+    public Image progressBar;   //Zamanlayýcýnýn image ögesi.
 
-    private PomodoroManager manager;
+    private PomodoroManager manager;  //PomodoroManager sýnýfýndan bir örnek oluþturuldu.
 
     private void Start()
     {
@@ -310,23 +31,25 @@ public class PomodoroTimer : MonoBehaviour
             return;
         }
 
-        startButton.onClick.AddListener(StartTimer);
+        startButton.onClick.AddListener(StartTimer);   //Butonlara týklanýldýðýnda ilgili fonksiyonlarýnýn çaðýrýlmasý.
         stopButton.onClick.AddListener(StopTimer);
         resetButton.onClick.AddListener(ResetTimer);
         saveButton.onClick.AddListener(SaveSettings);
 
-        workTimeInput.onValueChanged.AddListener(delegate { ValidateInputFields(); });
+        workTimeInput.onValueChanged.AddListener(delegate { ValidateInputFields(); }); //Kullanýcýný girdiði deðerlerin geçerliliðine göre buton iþlevselliðini deðiþtiren fonksiyon çaðýrýlýr.
         breakTimeInput.onValueChanged.AddListener(delegate { ValidateInputFields(); });
         cycleCountInput.onValueChanged.AddListener(delegate { ValidateInputFields(); });
 
+        //Ayarlar ve durum PlayerPrefs'ten yüklenir.
         manager.LoadSettings();
         manager.LoadState();
+        //Giriþ alanlarý PomodoroManager'dan yüklenir.
         LoadInputs();
 
+        // Timer texti, progress barý, set status texti güncelleyecek fonksiyonlar çaðýrýlýr.
         UpdateTimerText();
         UpdateProgressBar();
         UpdateSetStatusText();
-        //UpdateTotalWorkTimeText(); // Baþlangýçta toplam çalýþma süresini güncelle
     }
 
     private void Update()
@@ -338,21 +61,20 @@ public class PomodoroTimer : MonoBehaviour
 
         if (manager.timerRunning)
         {
-            manager.currentTime -= Time.deltaTime;
+            manager.currentTime -= Time.deltaTime; //Zamanlayýcý güncellenir.
 
             if (manager.isWorking)
             {
-                manager.totalWorkTime += Time.deltaTime; // Toplam çalýþma süresini güncelle
+                manager.totalWorkTime += Time.deltaTime; // Toplam çalýþma süresini güncellenir
                 Debug.Log("toplam calýsma süresi: " + manager.totalWorkTime);
-                // UpdateTotalWorkTimeText(); // Ekranda toplam çalýþma süresini güncelle
             }
 
             if (manager.currentTime <= 0)
             {
                 if (manager.isWorking)
                 {
-                    manager.currentCycle++;
-                    if (manager.currentCycle >= manager.cycleCount)
+                    manager.currentCycle++; //Set sayýsý arttýrýldý.
+                    if (manager.currentCycle >= manager.cycleCount) //Kullanýcýnýn girdiði set sayýsý tamamlandýðýnda gerçekleþtirelecek iþlemler.
                     {
                         manager.timerRunning = false;
                         timerText.text = "Done!";
@@ -360,12 +82,12 @@ public class PomodoroTimer : MonoBehaviour
                         setStatusText.text = "Completed";
                         return;
                     }
-                    manager.isWorking = false;
+                    manager.isWorking = false;  //Mola süresine geçilir.
                     manager.currentTime = manager.breakTime;
                 }
                 else
                 {
-                    manager.isWorking = true;
+                    manager.isWorking = true; //Çalýþma zamanýna geçilir.
                     manager.currentTime = manager.workTime;
                 }
             }
@@ -376,7 +98,7 @@ public class PomodoroTimer : MonoBehaviour
         }
     }
 
-    private void StartTimer()
+    private void StartTimer()  //Zamanlayýcýyý baþlatmaya veya durdurulan zamanlayýcýyý devam ettiren fonksiyon.
     {
         if (manager != null && !manager.timerRunning)
         {
@@ -390,6 +112,7 @@ public class PomodoroTimer : MonoBehaviour
         }
     }
 
+    //Zamanlayýcýyý durduran fonksiyon.
     private void StopTimer()
     {
         if (manager != null)
@@ -398,6 +121,7 @@ public class PomodoroTimer : MonoBehaviour
         }
     }
 
+    //Zamanlayýcýyý tüm setler ile birlikte sýfýrlayan fonksiyon.
     private void ResetTimer()
     {
         if (manager != null)
@@ -409,8 +133,8 @@ public class PomodoroTimer : MonoBehaviour
             UpdateTimerText();
             UpdateProgressBar();
             UpdateSetStatusText();
-            UpdateSetStatusText();// clearýn altýna da gelebilir
-            ClearErrorMessage(); // Reset iþleminde hata mesajýný temizle
+            UpdateSetStatusText();
+            ClearErrorMessage(); //Hata mesajý temizlenir.
         }
     }
 
@@ -420,18 +144,18 @@ public class PomodoroTimer : MonoBehaviour
         {
             if (ValidateInputs())
             {
-                float workTime = float.Parse(workTimeInput.text) * 60;
+                float workTime = float.Parse(workTimeInput.text) * 60;   //work time ve break time deðerleri saniyeye çevrilir.
                 float breakTime = float.Parse(breakTimeInput.text) * 60;
                 int cycles = int.Parse(cycleCountInput.text);
 
-                manager.SaveSettings(workTime, breakTime, cycles);
+                manager.SaveSettings(workTime, breakTime, cycles); //Pomodoro ayarlarýný kaydeder ve sonrasýnda yeniden yüklenir.
                 manager.LoadSettings();
                 ResetTimer();
-                EnableButtons(true); // Giriþler geçerli olduðunda butonlarý etkinleþtir
+                EnableButtons(true); // Giriþler geçerli olduðunda butonlar etkinleþtirilir.
             }
             else
             {
-                EnableButtons(false); // Giriþler geçersiz olduðunda butonlarý devre dýþý býrak
+                EnableButtons(false); // Giriþler geçersiz olduðunda butonlar devre dýþý býrakýlýr.
             }
         }
     }
@@ -440,7 +164,7 @@ public class PomodoroTimer : MonoBehaviour
     {
         if (manager != null)
         {
-            workTimeInput.text = (manager.workTime / 60).ToString();
+            workTimeInput.text = (manager.workTime / 60).ToString();    //Deðerler string türü ifadeye çevrilerek text objelerine atanýr.
             breakTimeInput.text = (manager.breakTime / 60).ToString();
             cycleCountInput.text = manager.cycleCount.ToString();
         }
@@ -451,22 +175,23 @@ public class PomodoroTimer : MonoBehaviour
         if (ValidateInputs())
         {
             ClearErrorMessage();
-            EnableButtons(true); // Giriþler geçerli olduðunda butonlarý etkinleþtir
+            EnableButtons(true); // Giriþler geçerli olduðunda butonlar etkinleþtirilir.
         }
         else
         {
-            EnableButtons(false); // Giriþler geçersiz olduðunda butonlarý devre dýþý býrak
+            EnableButtons(false); // Giriþler geçersiz olduðunda butonlar devre dýþý býrakýlýr.
         }
     }
 
     private bool ValidateInputs()
     {
-        ClearErrorMessage(); // Hata mesajýný temizle
+        ClearErrorMessage();
 
         float workTime;
         float breakTime;
         int cycles;
 
+        //Girilen deðerlerin uygun olup olunmadýðý kontrol edilir.
         if (!float.TryParse(workTimeInput.text, out workTime) || !float.TryParse(breakTimeInput.text, out breakTime) || !int.TryParse(cycleCountInput.text, out cycles))
         {
             ShowErrorMessage("Geçersiz deðer girildi. Yalnýzca sayýsal deðerler kabul edilir.");
@@ -482,36 +207,36 @@ public class PomodoroTimer : MonoBehaviour
         return true;
     }
 
-    private void ShowErrorMessage(string message)
+    private void ShowErrorMessage(string message) //Geçersiz giriþler için hata mesajlarýnýn verildiði fonksiyon.
     {
         errorMessageText.text = message;
         errorMessageText.gameObject.SetActive(true);
     }
 
-    private void ClearErrorMessage()
+    private void ClearErrorMessage()  //Hata mesajlarýnýn temizlendiði fonksiyon.
     {
         errorMessageText.text = "";
         errorMessageText.gameObject.SetActive(false);
     }
 
-    private void EnableButtons(bool enable)
+    private void EnableButtons(bool enable)  //Butonlarýn aktifliðini kontrol eden fonksiyon.
     {
         startButton.interactable = enable;
         stopButton.interactable = enable;
         resetButton.interactable = enable;
     }
 
-    private void UpdateTimerText()
+    private void UpdateTimerText()   //Timer textinin güncellendiði fonkiyon.
     {
         if (manager != null)
         {
-            int minutes = Mathf.FloorToInt(manager.currentTime / 60F);
-            int seconds = Mathf.FloorToInt(manager.currentTime % 60F);
+            int minutes = Mathf.FloorToInt(manager.currentTime / 60F);          //Zamanlayýcýnýn mevcut süresini dakika ve saniye cinsinden ayarlanýr ve string 
+            int seconds = Mathf.FloorToInt(manager.currentTime % 60F);          //ifadesine çevrilerek timer textine atanýr.
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
         }
     }
 
-    private void UpdateProgressBar()
+    private void UpdateProgressBar() //Progress barýn güncellendiði fonksiyon.
     {
         if (manager != null)
         {
@@ -520,7 +245,7 @@ public class PomodoroTimer : MonoBehaviour
         }
     }
 
-    private void UpdateSetStatusText()
+    private void UpdateSetStatusText()  // Set status textinin güncellendiði fonksiyon.
     {
         if (manager != null)
         {
@@ -533,33 +258,13 @@ public class PomodoroTimer : MonoBehaviour
         }
     }
 
-
-
-    //private void OnApplicationPause(bool pauseStatus)
-    //{
-    //    if (manager != null)
-    //    {
-    //        if (pauseStatus)
-    //        {
-    //            manager.SaveState();
-    //        }
-    //        else
-    //        {
-    //            manager.LoadState();
-    //            UpdateTimerText();
-    //            UpdateProgressBar();
-    //            UpdateSetStatusText();
-    //            // UpdateTotalWorkTimeText(); // Uygulama geri geldiðinde toplam çalýþma süresini güncelle
-    //        }
-    //    }
-    //}
     private void OnApplicationPause(bool pauseStatus)
     {
         if (manager != null)
         {
             if (pauseStatus)
             {
-                manager.LoadState(); // Kaydedilmiþ zamanlayýcý durumunu yükle
+                manager.LoadState(); // Kaydedilmiþ zamanlayýcý durumu yüklenir.
                 UpdateTimerText();
                 UpdateProgressBar();
                 UpdateSetStatusText();
@@ -567,14 +272,11 @@ public class PomodoroTimer : MonoBehaviour
         }
     }
 
-
-
-
     private void OnDisable()
     {
         if (manager != null)
         {
-            manager.SaveState();
+            manager.SaveState();  //Uygulamadan çýkýldýðýnda zamanlayýcýnýn mevcut durumu PlayerPref ile kaydedilir.
         }
     }
 }

@@ -2,25 +2,23 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
-using System.Collections.Generic;
 
 public class SurveyManager : MonoBehaviour
 {
-    public TextMeshProUGUI questionText;
-    public Button[] optionButtons;
-    public Button nextButton;
-    public Button previousButton;
-    public TextMeshProUGUI warnText;
+    public TextMeshProUGUI questionText;   //Anket sorularýný tutmak için TextMeshPro ögesi.
+    public Button[] optionButtons;         //Dört adet cevap seçeneði için oluþturulmuþ Button dizisi.
+    public Button nextButton;              //Bir sonraki soruya geçmek için oluþturulan buton.
+    public Button previousButton;          //Bir önceki soruya geçmek için oluþturulan buton.
+    public TextMeshProUGUI warnText;       //Kullanýcýnýn herhangi bir seçeneði seçmemesi durumunda ekrana verilen uyarý ögesi.
 
-    public Image circleProgressBar;
+    public Image circleProgressBar;        //Kullanýcýnýn kaçýncý soruda olduðunu görmesini saðlayan image ögesi.
 
-    public Sprite nextArrowSprite;
+    public Sprite nextArrowSprite;         //Buton resimlerinin sprite halleri.
     public Sprite checkmarkSprite;
 
     private int currentQuestionIndex = 0;
     private int totalScore = 0;
     private int[] selectedAnswers;
-    private HashSet<int>[] multipleSelectedAnswers;
 
     public string[] questions = {
         "Son bir hafta içinde kendinizi ne sýklýkla stresli hissettiniz?",
@@ -39,54 +37,41 @@ public class SurveyManager : MonoBehaviour
         new string[] { "Hiç", "Nadiren", "Bazen", "Sýk sýk", "Her zaman" },
         new string[] { "Evet, her zaman", "Evet, bazen", "Hayýr, nadiren", "Hayýr, hiç" },
         new string[] { "Evet, her zaman", "Evet, bazen", "Hayýr, nadiren", "Hayýr, hiç" },
-        new string[] {  "Hiçbiri", "1-2", "3-4", "5-6"  }
-    };
-
-    private bool[] isMultipleChoice = {
-        false, // Son bir hafta içinde kendinizi ne sýklýkla stresli hissettiniz?
-        false,  //Son zamanlarda baþ aðrýsý, mide problemleri, uyku sorunlarý, kas gerginliði,  kalp çarpýntýsý, yorgunluk gibi fiziksel belirtilerden kaç tanesini yaþadýnýz?
-        false, // Konsantrasyon sorunlarý yaþýyor musunuz?
-        false, // Son bir hafta içinde kendinizi ne sýklýkla huzursuz veya gergin hissettiniz?
-        false, // Stresli hissettiðinizde konuþabileceðiniz birine sahip misiniz?
-        false, // Kendinize ayýrdýðýnýz boþ zamanlarda rahatlamayý baþarabiliyor musunuz?
-        false   // Okul/sýnavlar, aile, sosyal iliþkiler, kiþisel saðlýk, gelecek endiþesi, maddi durum gibi faktörlerden kaç tanesi sizi strese sokar?
+        new string[] { "Hiçbiri", "1-2", "3-4", "5-6" }
     };
 
     void Start()
     {
         selectedAnswers = new int[questions.Length];
-        multipleSelectedAnswers = new HashSet<int>[questions.Length];
-        for (int i = 0; i < multipleSelectedAnswers.Length; i++)
-        {
-            multipleSelectedAnswers[i] = new HashSet<int>();
-        }
 
-        nextButton.onClick.AddListener(NextQuestion);
+        nextButton.onClick.AddListener(NextQuestion);   //"nextButton" butonuna her týklandýðýnda, NextQuestion fonksiyonu çaðýrýlmasý için onClick.AddListener kullanýldý.
         previousButton.onClick.AddListener(PreviousQuestion);
 
-        for (int i = 0; i < optionButtons.Length; i++)
+        for (int i = 0; i < optionButtons.Length; i++)      //Kullanýcýnýn her bir cevap butonuna týkladýðýnda SelectAnswer fonksiyonunu çaðýrmak için döngü kullanýldý.
         {
-            int index = i; // Capture the index for the lambda
+            int index = i;
             optionButtons[i].onClick.AddListener(() => SelectAnswer(index + 1));
         }
 
         UpdateQuestion();
-        circleProgressBar.fillAmount = currentQuestionIndex / 7f;
+        circleProgressBar.fillAmount = currentQuestionIndex / (float)questions.Length; //Kullanýcýnýn ilerlemesini göstermek adýna circleProgressBar ile fillAmount kullanýldý.
     }
 
     void UpdateQuestion()
     {
         warnText.text = " ";
         questionText.text = questions[currentQuestionIndex];
-        circleProgressBar.fillAmount = currentQuestionIndex / 7f;
+        circleProgressBar.fillAmount = currentQuestionIndex / (float)questions.Length;
+
+        // Her bir seçenek düðmesini kontrol etmek için döngü baþlatýlýr.
         for (int i = 0; i < optionButtons.Length; i++)
         {
             if (i < answers[currentQuestionIndex].Length)
             {
                 optionButtons[i].gameObject.SetActive(true);
-                optionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = answers[currentQuestionIndex][i];
+                optionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = answers[currentQuestionIndex][i]; //Döngüyle beraber seçilen cevap textini, butonun sahip olduðu text nesnesine atar.
 
-                // Reset button visuals
+
                 optionButtons[i].image.color = Color.white;
             }
             else
@@ -95,22 +80,15 @@ public class SurveyManager : MonoBehaviour
             }
         }
 
-        // Highlight the selected answer if exists
-        if (isMultipleChoice[currentQuestionIndex])
-        {
-            foreach (var answerIndex in multipleSelectedAnswers[currentQuestionIndex])
-            {
-                optionButtons[answerIndex - 1].image.color = Color.green;
-            }
-        }
-        else if (selectedAnswers[currentQuestionIndex] != 0)
+        // Seçilen cevabýn rengi yeþile çevrilir.
+        if (selectedAnswers[currentQuestionIndex] != 0)
         {
             optionButtons[selectedAnswers[currentQuestionIndex] - 1].image.color = Color.green;
         }
 
-        previousButton.gameObject.SetActive(currentQuestionIndex > 0);
+        previousButton.gameObject.SetActive(currentQuestionIndex > 0);    //Ýlk soruda previousButton objesinin gösterilmemesi adýna currentQuestionIndex > 0 koþulu aranýldý.
 
-        // Update the next button's image
+        //Son soruda kullanýcýya anketin bittiðini göstermek adýna nextArrow ýmage objesinin checkmark ýmage objesine dönüþümü saðlandý.
         if (currentQuestionIndex == questions.Length - 1)
         {
             nextButton.GetComponent<Image>().sprite = checkmarkSprite;
@@ -123,90 +101,55 @@ public class SurveyManager : MonoBehaviour
 
     void SelectAnswer(int answerIndex)
     {
-        Color selectedColor = new Color(120 / 255f, 114 / 255f, 222 / 255f); // #7872DE
+        Color selectedColor = new Color(120 / 255f, 114 / 255f, 222 / 255f); // Seçilen seçeneðin, #7872DE rengi olmasý ayarlandý.
 
-        if (isMultipleChoice[currentQuestionIndex])
+        //Kullanýcý, ayný soruda cevap seçeneðini deðiþtirdiðinde eski cevabýnýn puaný toplam score deðerine eklenmemesi için koþul ifadeleri kullanýldý.
+        if (selectedAnswers[currentQuestionIndex] != 0)
         {
-            if (multipleSelectedAnswers[currentQuestionIndex].Contains(answerIndex))
-            {
-                multipleSelectedAnswers[currentQuestionIndex].Remove(answerIndex);
-                totalScore -= answerIndex - 1;
-            }
-            else
-            {
-                multipleSelectedAnswers[currentQuestionIndex].Add(answerIndex);
-                totalScore += answerIndex - 1;
-            }
+            totalScore -= selectedAnswers[currentQuestionIndex] - 1;
         }
-        else
-        {
-            if (selectedAnswers[currentQuestionIndex] != 0)
-            {
-                totalScore -= selectedAnswers[currentQuestionIndex];
-            }
-            selectedAnswers[currentQuestionIndex] = answerIndex;
-            totalScore += answerIndex - 1;
-        }
+        selectedAnswers[currentQuestionIndex] = answerIndex;
+        totalScore += answerIndex - 1;
 
-        // Reset button visuals and highlight the selected ones
         for (int i = 0; i < optionButtons.Length; i++)
         {
             optionButtons[i].image.color = Color.white;
         }
 
-        if (isMultipleChoice[currentQuestionIndex])
-        {
-            foreach (var idx in multipleSelectedAnswers[currentQuestionIndex])
-            {
-                optionButtons[idx - 1].image.color = selectedColor;
-            }
-        }
-        else
-        {
-            optionButtons[answerIndex - 1].image.color = selectedColor;
-        }
+        optionButtons[answerIndex - 1].image.color = selectedColor;
     }
 
     void NextQuestion()
     {
-        if (!isMultipleChoice[currentQuestionIndex] && selectedAnswers[currentQuestionIndex] == 0)
+        if (selectedAnswers[currentQuestionIndex] == 0) //Kullanýcý herhangi bir cevabý iþaretlemediði sürece sonraki soruya geçmesi önlenir.
         {
             warnText.text = "Lütfen bir cevap seçin.";
             Debug.LogWarning("Lütfen bir cevap seçin.");
             return;
         }
 
-        if (isMultipleChoice[currentQuestionIndex] && multipleSelectedAnswers[currentQuestionIndex].Count == 0)
-        {
-            warnText.text = "Lütfen en az bir cevap seçin.";
-            Debug.LogWarning("Lütfen en az bir cevap seçin.");
-            return;
-        }
-
-        if (currentQuestionIndex < questions.Length - 1)
+        if (currentQuestionIndex < questions.Length - 1) // Eðer mevcut soru indeksi, toplam soru sayýsýnýn bir eksiðinden fazla deðilse bir sonraki soruya geçilir.
+                                                         // Aksi halde, toplam puan totalScore deðiþkenine atanýr ve RENKRZ5.3_ssonuc sahnesine geçiþ yapýlýr.
         {
             currentQuestionIndex++;
             UpdateQuestion();
-            circleProgressBar.fillAmount = currentQuestionIndex / 7f;
+            circleProgressBar.fillAmount = currentQuestionIndex / (float)questions.Length;
         }
         else
         {
             SurveyData.totalScore = totalScore;
-            SceneManager.LoadScene("RENKRZ5.3_ssonuc"); // Sonuç sahnesine geçiþ
+            SceneManager.LoadScene("RENKRZ5.3_ssonuc");
         }
     }
 
     void PreviousQuestion()
     {
-        if (currentQuestionIndex > 0)
+        if (currentQuestionIndex > 0) // Eðer mevcut soru indeksi sýfýrdan büyükse bir önceki soruya geçilir.
         {
             currentQuestionIndex--;
             UpdateQuestion();
-            circleProgressBar.fillAmount = currentQuestionIndex / 7f;
+            circleProgressBar.fillAmount = currentQuestionIndex / (float)questions.Length;
         }
     }
 }
-
-
-
 
