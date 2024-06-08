@@ -1,109 +1,93 @@
-//#include "deneyap.h"
-#include <Wire.h>
+#include "deneyap.h"
+#include <WiFi.h>
+#include <WebServer.h>
+#include <ESPmDNS.h>
 #include "MAX30105.h"
 #include "heartRate.h"
-#include "BluetoothSerial.h"
 
 MAX30105 particleSensor;
-BluetoothSerial SerialBT;
+WebServer server(80);
 
-const int measurementTime = 10000; // 10 seconds
-unsigned long lastBeat = 0;
+const char* ssid = "Galaxy A30";
+const char* password = "isys7294";
+const char* deviceName = "esp32"; // mDNS için cihaz adı
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("Initializing...");
-  SerialBT.begin("DeneyapKart");
-  Serial.println("Bluetooth initialized");
+  WiFi.begin(ssid, password);
 
-  // Initialize MAX30102
-  Serial.println("Attempting to initialize sensor...");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("WiFi'ye bağlanılıyor...");
+  }
+
+  Serial.println("WiFi'ye bağlandı!");
+  Serial.print("IP adresi: ");
+  Serial.println(WiFi.localIP());
+
+  if (!MDNS.begin(deviceName)) {
+    Serial.println("mDNS başlatılamadı.");
+    return;
+  }
+
+  Serial.println("mDNS başlatıldı.");
+  Serial.print("mDNS adı: ");
+  Serial.print(deviceName);
+  Serial.println(".local");
+
   if (!particleSensor.begin(Wire, I2C_SPEED_FAST)) {
-    Serial.println("MAX30102 not found. Please check wiring/power.");
+    Serial.println("MAX30102 sensörü bulunamadı. Lütfen bağlantıları kontrol edin.");
     while (1);
   }
 
-  particleSensor.setup(); // Configure sensor with default settings
-  particleSensor.setPulseAmplitudeRed(0x0A); // Turn Red LED to low to indicate sensor is running
-  particleSensor.setPulseAmplitudeGreen(0); // Turn off Green LED
+  particleSensor.setup();
+  particleSensor.setPulseAmplitudeRed(0x0A); // Kırmızı LED'i düşük seviyeye ayarlayın
+  particleSensor.setPulseAmplitudeGreen(0); // Yeşil LED'i kapatın
 
-  Serial.println("Setup complete");
-//  Serial.begin(115200);
-//  SerialBT.begin("DeneyapKart");
-//
-//  if (!particleSensor.begin(Wire, I2C_SPEED_FAST)) {
-//    Serial.println("MAX30102 not found. Please check wiring/power.");
-//    while (1);
-//  }
-//
-//  particleSensor.setup();
-//  particleSensor.setPulseAmplitudeRed(0x0A);
-//  particleSensor.setPulseAmplitudeGreen(0);
-//
-//  Serial.println("Setup complete");
+  server.on("/start", HTTP_GET, handleStart);
+  server.begin();
+  Serial.println("Web sunucusu başlatıldı.");
 }
 
 void loop() {
-  if (SerialBT.available()) {
-    String command = SerialBT.readString();
-    if (command == "start") {
-      measureHeartRate();
-    }
-  }
+  Serial.println("loop'a girildi.");
+  server.handleClient();
+  Serial.println("server.handleClient() komutu çalıştı.");
 }
 
-void measureHeartRate() {
+void handleStart() {
+  Serial.println("handleStart()'a girildi.");
+  int measurementTime = 10000; // 10 saniye
   unsigned long startTime = millis();
   long irValue;
   int beatsDetected = 0;
   long sumBeats = 0;
+  unsigned long lastBeat = 0;
 
   while (millis() - startTime < measurementTime) {
+    Serial.println("Ölçüm süresi bitmedi, lütfen bekleyiniz.");
     irValue = particleSensor.getIR();
 
     if (checkForBeat(irValue)) {
+      Serial.println("Parmak tespit edildi.");
       float beatsPerMinute = 60 / ((millis() - lastBeat) / 1000.0);
       lastBeat = millis();
       if (beatsPerMinute > 20 && beatsPerMinute < 255) {
+        Serial.println("Anlık nabız başarılı olarak tespit edildi.");
         sumBeats += beatsPerMinute;
         beatsDetected++;
       }
     }
     delay(20);
   }
-
+  Serial.println("Ölçüm sona erdi.");
+  
   if (beatsDetected > 0) {
     int averageBPM = sumBeats / beatsDetected;
-    SerialBT.println(String(averageBPM));
+    server.send(200, "text/plain", String(averageBPM));
+    Serial.println("Nabız verisi server'a gönderildi.");
   } else {
-    SerialBT.println("Error");
+    server.send(200, "text/plain", "Hata: Nabız algılanamadı.");
+    Serial.println("Nabız tespit edilemedi.");
   }
 }
-
-//#include <BluetoothSerial.h>
-//#include <esp_bt.h>
-//#include <esp_bt_main.h>
-//#include <esp_bt_device.h>
-//
-//BluetoothSerial SerialBT;
-//
-//void setup() {
-//  Serial.begin(115200);
-//  if (!SerialBT.begin("DENEYAPKART")) {
-//    Serial.println("Bluetooth başlatılamadı");
-//  } else {
-//    Serial.println("Bluetooth başlatıldı. Şimdi diğer cihazlarla eşleşebilir.");
-//    Serial.println("Bluetooth MAC adresi: " + getMacAddress());
-//  }
-//}
-//
-//void loop() {
-//  Serial.println(getMacAddress());
-//}
-//
-//String getMacAddress() {
-//  const uint8_t* mac = esp_bt_dev_get_address();
-//  char macStr[18];
-//  sprintf(macStr, "%02X:%02X:%02X:%02X:%02X:%02X", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
-//  return String(macStr);
-//}

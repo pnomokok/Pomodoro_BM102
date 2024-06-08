@@ -104,7 +104,7 @@ public class TYT_Graph : MonoBehaviour
         }
         else
         {
-            Debug.LogError("TYT_DataManager.tytInstance or tytLastFiveNets is null");
+            Debug.Log("TYT_DataManager.tytInstance or tytLastFiveNets is null");
         }
     }
 }

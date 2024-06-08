@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 public class TYT_SaveLessonData : MonoBehaviour
 {
@@ -19,10 +18,11 @@ public class TYT_SaveLessonData : MonoBehaviour
     public TMP_InputField tytFenCorrectInputField;
     public TMP_InputField tytFenWrongInputField;
     public TMP_InputField tytFenEmptyInputField;
+    // 6-20. satýrlarda TYT dersleri için girdi kutularý tanýmlanmýþtýr
 
-    public TextMeshProUGUI warningText; // Uyarý metni referansý
+    public TextMeshProUGUI warningText; // Uyarý metni tanýmlandý
 
-    public TYT_LessonData tytLessonData;
+    public TYT_LessonData tytLessonData; // Baþka script'teki bir sýnýftan bir nesne türetildi
 
     public void TYT_SaveData()
     {
@@ -41,11 +41,12 @@ public class TYT_SaveLessonData : MonoBehaviour
         int fenCorrect = ParseInputField(tytFenCorrectInputField);
         int fenWrong = ParseInputField(tytFenWrongInputField);
         int fenEmpty = ParseInputField(tytFenEmptyInputField);
+        // 29-43. satýrlarda kullanýcýdan alýnan deðerler tam sayýya çevrildi, çünkü bunlarýn matematiksel iþlemlerde kullanýlmasý gerekiyor.
 
         if (!IsValidInput(turkceCorrect, turkceWrong, turkceEmpty, 40) ||
             !IsValidInput(sosyalCorrect, sosyalWrong, sosyalEmpty, 20) ||
             !IsValidInput(matematikCorrect, matematikWrong, matematikEmpty, 40) ||
-            !IsValidInput(fenCorrect, fenWrong, fenEmpty, 20))
+            !IsValidInput(fenCorrect, fenWrong, fenEmpty, 20)) // Burada girilen deðerlerde bir yanlýþlýk var ise uyarý metni güncellenir.
         {
             warningText.text = "Lütfen her ders için geçerli deðerler girin. Toplam soru sayýsý ve negatif deðerler kontrol edilmeli.";
             return;
@@ -66,18 +67,19 @@ public class TYT_SaveLessonData : MonoBehaviour
         tytLessonData.tytFenCorrectAnswers = fenCorrect;
         tytLessonData.tytFenWrongAnswers = fenWrong;
         tytLessonData.tytFenEmptyAnswers = fenEmpty;
+        // 55-69. satýrlarda alýnan doðru deðerlerin atamasý yapýlýr.
 
         float tyt_ToplamNet = (tytLessonData.tytTurkceCorrectAnswers + tytLessonData.tytSosyalCorrectAnswers + tytLessonData.tytMatematikCorrectAnswers + tytLessonData.tytFenCorrectAnswers)
-            - (tytLessonData.tytTurkceWrongAnswers + tytLessonData.tytSosyalWrongAnswers + tytLessonData.tytMatematikWrongAnswers + tytLessonData.tytFenWrongAnswers) / 4.0f;
+            - (tytLessonData.tytTurkceWrongAnswers + tytLessonData.tytSosyalWrongAnswers + tytLessonData.tytMatematikWrongAnswers + tytLessonData.tytFenWrongAnswers) / 4.0f; // Toplam net hesabý yapýlýr.
 
-        TYT_DataManager.tytInstance.AddNet(tyt_ToplamNet);
+        TYT_DataManager.tytInstance.AddNet(tyt_ToplamNet); // Elde edilen net deðeri kaydedilir.
 
-        Debug.Log("Net added: " + tyt_ToplamNet); // Debug log
+        Debug.Log("Net added: " + tyt_ToplamNet); // Bu satýrýn kodun çalýþmasýna bir katkýsý yoktur, uygulamanýn geliþtirme aþamasýnda her þeyin yolunda gidip gitmediðini anlayabilmek için konsol çýktýsý alýnýr.
 
-        warningText.text = ""; // Uyarý mesajýný temizle
+        warningText.text = ""; // Bu satýra gelinmesi kullanýcýnýn herhangi bir yanlýþ deðer girmediðini gösterir, bu yüzden uyarý mesajý silinir.
     }
 
-    private int ParseInputField(TMP_InputField inputField)
+    private int ParseInputField(TMP_InputField inputField) // Bu fonksiyon parametre aldýðý string'i tam sayý olarak döndürür, string boþsa 0 döndürür.
     {
         if (string.IsNullOrEmpty(inputField.text))
         {
@@ -89,7 +91,7 @@ public class TYT_SaveLessonData : MonoBehaviour
         }
     }
 
-    private bool IsValidInput(int correct, int wrong, int empty, int totalQuestions)
+    private bool IsValidInput(int correct, int wrong, int empty, int totalQuestions) // Bu fonksiyon girdi kutularýna girilen deðerlerin doðruluðunu kontrol etmek için kullanýlýr.
     {
         return (correct + wrong + empty == totalQuestions) && (correct >= 0 && wrong >= 0 && empty >= 0);
     }

@@ -65,4 +65,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Pomodoro_BM102/RENK5_stres.unity
     guid: b0f28164d6112104e8760e863abf8ee2
+  - enabled: 1
+    path: Assets/Pomodoro_BM102/RENK5.2_sensor.unity
+    guid: 1b76d8f98376ee0479661f076cd490a3
   m_configObjects: {}
