@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class TrueFalseGame : MonoBehaviour
 {
+    // UI elemanlarÄ±
     public TMP_Text titleText;
     public Button playButton;
     public Button exitButton;
@@ -18,42 +18,50 @@ public class TrueFalseGame : MonoBehaviour
     public TMP_Text gameOverText;
     public TMP_Text warnText;
     public TMP_Text questCountText;
-    public Image correctImage; // Doğru cevap görseli
-    public Image incorrectImage; // Yanlış cevap görseli
-    public Image questFrame; // Soruların olduğu çerçeve
+    public Image correctImage; // DoÄŸru cevap gÃ¶rseli
+    public Image incorrectImage; // YanlÄ±ÅŸ cevap gÃ¶rseli
+    public Image questFrame; // SorularÄ±n olduÄŸu Ã§erÃ§eve
     public Button nextButton;
 
+    // Oyun durumu deÄŸiÅŸkenleri
     private int score = 0;
-    private string[] questions = { "Enzimler biyokimyasal reaksiyonları başlatır.",
-                                   "Osmanlı Devleti'nde \"Pençik Sistemi\"nin uygulanmasındaki temel amaç devlete sadık kişilerden oluşan bir ordu kurmaktır.",
-                                   "Nötr halden anyona dönüşen bir taneciğin toplam tanecik sayısı artar.",
-                                   "Karahanlıların Doğu-Batı Karahanlılar olarak ikiye ayrılması Haçlı Seferlerinin bir sonucudur.",
-                                   "Etki-tepki kuvvetleri sadece temas gerektiren kuvvetler için geçerlidir.",
-                                   "Türkiye,Ekvator üzerinde bir konuma getirilseydi yer şekilleri değişmezdi.",
-                                   "Etçillerin bağırsaklarında selüloz sindiren bakteriler bulunur",
-                                   "\"Sağlık raporu başvurularını kurul değerlendirecek\" cümlesinde topluluk adı kullanılmıştır",
-                                   "Sentriollerin eşlenmesi bitki hücresinin hücre döngüsünde görülen bir olaydır.",
-                                   "Sıcaklık azaldıkça gaz moleküllerinin kinetik enerjisi azalır.",
-                                   "İslam dinine göre insanlara verilmiş olan kaza-kader sınırları çerçevesinde hareket imkanı tanıyan özgür irade \"Külli İrade\"dir.",
-                                   "Moleküler kristallerin aynı koşullarda erime noktası iyonik kristallerinkinden düşüktür.",
-                                   "Sürtünmeli bir yüzeyde atılan cismin yavaşlaması dengelenmiş kuvvet etkisinde olduğunu gösterir.",
-                                   "Filogenetik sınıflandırmada aynı takımda olduğu bilinen canlıların şubeleri farklı olabilir.",
-                                   "\"Araba hızını alamamış,ilerideki kanala uçmuş.\" bağımlı sıralı bir cümledir."
+    private string[] questions = { 
+        "Enzimler biyokimyasal reaksiyonlarÄ± baÅŸlatÄ±r.",
+        "OsmanlÄ± Devleti'nde \"PenÃ§ik Sistemi\"nin uygulanmasÄ±ndaki temel amaÃ§ devlete sadÄ±k kiÅŸilerden oluÅŸan bir ordu kurmaktÄ±r.",
+        "NÃ¶tr halden anyona dÃ¶nÃ¼ÅŸen bir taneciÄŸin toplam tanecik sayÄ±sÄ± artar.",
+        "KarahanlÄ±larÄ±n DoÄŸu-BatÄ± KarahanlÄ±lar olarak ikiye ayrÄ±lmasÄ± HaÃ§lÄ± Seferlerinin bir sonucudur.",
+        "Etki-tepki kuvvetleri sadece temas gerektiren kuvvetler iÃ§in geÃ§erlidir.",
+        "TÃ¼rkiye, Ekvator Ã¼zerinde bir konuma getirilseydi yer ÅŸekilleri deÄŸiÅŸmezdi.",
+        "EtÃ§illerin baÄŸÄ±rsaklarÄ±nda selÃ¼loz sindiren bakteriler bulunur",
+        "\"SaÄŸlÄ±k raporu baÅŸvurularÄ±nÄ± kurul deÄŸerlendirecek\" cÃ¼mlesinde topluluk adÄ± kullanÄ±lmÄ±ÅŸtÄ±r",
+        "Sentriollerin eÅŸlenmesi bitki hÃ¼cresinin hÃ¼cre dÃ¶ngÃ¼sÃ¼nde gÃ¶rÃ¼len bir olaydÄ±r.",
+        "SÄ±caklÄ±k azaldÄ±kÃ§a gaz molekÃ¼llerinin kinetik enerjisi azalÄ±r.",
+        "Ä°slam dinine gÃ¶re insanlara verilmiÅŸ olan kaza-kader sÄ±nÄ±rlarÄ± Ã§erÃ§evesinde hareket imkanÄ± tanÄ±yan Ã¶zgÃ¼r irade \"KÃ¼lli Ä°rade\"dir.",
+        "MolekÃ¼ler kristallerin aynÄ± koÅŸullarda erime noktasÄ± iyonik kristallerinkinden dÃ¼ÅŸÃ¼ktÃ¼r.",
+        "SÃ¼rtÃ¼nmeli bir yÃ¼zeyde atÄ±lan cismin yavaÅŸlamasÄ± dengelenmiÅŸ kuvvet etkisinde olduÄŸunu gÃ¶sterir.",
+        "Filogenetik sÄ±nÄ±flandÄ±rmada aynÄ± takÄ±mda olduÄŸu bilinen canlÄ±larÄ±n Ã§ubeleri farklÄ± olabilir.",
+        "\"Araba hÄ±zÄ±nÄ± alamamÄ±ÅŸ, ilerideki kanala uÃ§muÅŸ.\" baÄŸÄ±mlÄ± sÄ±ralÄ± bir cÃ¼mledir."
     };
-    private bool[] answers = { false, true, true, false, false, true, false, true, false, true, false, true, false, false, true };
+    private bool[] answers = { 
+        false, true, true, false, false, true, false, true, false, true, false, true, false, false, true 
+    };
     private int currentQuestionIndex = 0;
 
+    // SorularÄ±n rastgele sÄ±rayla sorulmasÄ± iÃ§in indeksler
     private List<int> questionIndices = new List<int>();
-    private bool hasAnswered = false; // Kullanıcının cevap verip vermediğini izlemek için
+    private bool hasAnswered = false; // KullanÄ±cÄ±nÄ±n cevap verip vermediÄŸini izlemek iÃ§in
 
     void Start()
     {
+        // BaÅŸlangÄ±Ã§ ekranÄ±nÄ± gÃ¶ster
         ShowStartScreen();
+        // "Sonraki" butonuna tÄ±klama dinleyicisi ekle
         nextButton.onClick.AddListener(LoadNextQuestionOnClick);
     }
 
     public void ShowStartScreen()
     {
+        // BaÅŸlangÄ±Ã§ ekranÄ±ndaki elemanlarÄ±n gÃ¶rÃ¼nÃ¼rlÃ¼ÄŸÃ¼nÃ¼ ayarla
         titleText.text = "True          False";
         playButton.gameObject.SetActive(true);
         exitButton.gameObject.SetActive(true);
@@ -72,6 +80,7 @@ public class TrueFalseGame : MonoBehaviour
 
     public void StartGame()
     {
+        // Oyunu baÅŸlat ve ilgili elemanlarÄ± gÃ¶rÃ¼nÃ¼r yap
         playButton.gameObject.SetActive(false);
         exitButton.gameObject.SetActive(false);
         questionText.gameObject.SetActive(true);
@@ -83,17 +92,24 @@ public class TrueFalseGame : MonoBehaviour
         nextButton.gameObject.SetActive(true);
         questFrame.gameObject.SetActive(true);
 
+        // Oyun baÅŸlangÄ±Ã§ deÄŸerlerini ayarla
         score = 0;
         currentQuestionIndex = 0;
 
+        // Soru sayÄ±sÄ±nÄ± ve skoru gÃ¼ncelle
         questCountText.text = (currentQuestionIndex + 1) + "/15";
         scoreText.text = "Skor: " + score;
+
+        // SorularÄ± karÄ±ÅŸtÄ±r
         ShuffleQuestions();
+
+        // Ä°lk soruyu yÃ¼kle
         LoadNextQuestion();
     }
 
     void ShuffleQuestions()
     {
+        // SorularÄ± karÄ±ÅŸtÄ±rma
         questionIndices.Clear();
         for (int i = 0; i < questions.Length; i++)
         {
@@ -110,25 +126,23 @@ public class TrueFalseGame : MonoBehaviour
 
     void LoadNextQuestion()
     {
-        
+        // Yeni soru yÃ¼kle ve ilgili elemanlarÄ± gÃ¼ncelle
         correctImage.gameObject.SetActive(false);
         incorrectImage.gameObject.SetActive(false);
         trueButton.interactable = true;
         falseButton.interactable = true;
         nextButton.interactable = true;
-        hasAnswered = false; // Kullanıcı henüz cevap vermedi
-
+        hasAnswered = false; // KullanÄ±cÄ± henÃ¼z cevap vermedi
 
         if (currentQuestionIndex < questionIndices.Count)
         {
             questCountText.text = (currentQuestionIndex + 1) + "/15";
             questionText.text = questions[questionIndices[currentQuestionIndex]];
             warnText.gameObject.SetActive(false);
-
         }
         else
         {
-
+            // Oyun bittiÄŸinde yapÄ±lacaklar
             gameOverText.text = "Oyun Bitti!\nSkor: " + score;
 
             trueButton.gameObject.SetActive(false);
@@ -149,19 +163,22 @@ public class TrueFalseGame : MonoBehaviour
         if (hasAnswered)
             return;
 
-        hasAnswered = true; // Kullanıcı cevap verdi
+        hasAnswered = true; // KullanÄ±cÄ± cevap verdi
 
         if (answers[questionIndices[currentQuestionIndex]] == isTrue)
         {
+            // DoÄŸru cevap verildiÄŸinde skor gÃ¼ncelle ve geri bildirim gÃ¶ster
             score++;
             scoreText.text = "Skor: " + score;
             ShowCorrectFeedback();
         }
         else
         {
+            // YanlÄ±ÅŸ cevap verildiÄŸinde geri bildirim gÃ¶ster
             ShowIncorrectFeedback();
         }
 
+        // Cevap butonlarÄ±nÄ± devre dÄ±ÅŸÄ± bÄ±rak
         trueButton.interactable = false;
         falseButton.interactable = false;
         nextButton.interactable = true;
@@ -170,11 +187,13 @@ public class TrueFalseGame : MonoBehaviour
 
     void ShowCorrectFeedback()
     {
+        // DoÄŸru cevap gÃ¶rselini gÃ¶ster
         correctImage.gameObject.SetActive(true);
     }
 
     void ShowIncorrectFeedback()
     {
+        // YanlÄ±ÅŸ cevap gÃ¶rselini gÃ¶ster
         incorrectImage.gameObject.SetActive(true);
     }
 
@@ -182,11 +201,13 @@ public class TrueFalseGame : MonoBehaviour
     {
         if (!hasAnswered)
         {
-            warnText.text = "Lütfen bir cevap seçin.";
+            // KullanÄ±cÄ± cevap vermediyse uyarÄ± gÃ¶ster
+            warnText.text = "LÃ¼tfen bir cevap seÃ§in.";
             warnText.gameObject.SetActive(true);
             nextButton.interactable = false;
             return;
         }
+        // Sonraki soruya geÃ§
         currentQuestionIndex++;
         LoadNextQuestion();
     }
