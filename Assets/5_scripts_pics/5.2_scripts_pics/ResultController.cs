@@ -14,7 +14,7 @@ public class ResultController : MonoBehaviour
         if (heartRate > 0)
         {
             string stressLevel = GetStressLevel(heartRate);
-            stressLevelText.text = "Stres seviyeniz: " + stressLevel;
+            stressLevelText.text = stressLevel;
         }
         else
         {
@@ -25,9 +25,9 @@ public class ResultController : MonoBehaviour
     string GetStressLevel(int heartRate)
     {
         if (heartRate < 50)
-            return "Ölçüm esnasýnda parmaðýnýzý kaldýrmayýn ve tekrar deneyin.";
+            return "Hata!";
         else if (heartRate < 80)
-            return "Düþük stres seviyesi";
+            return "Düsük stres seviyesi";
         else if (heartRate < 100)
             return "Orta stres seviyesi";
         else

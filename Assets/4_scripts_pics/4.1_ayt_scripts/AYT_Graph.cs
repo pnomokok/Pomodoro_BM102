@@ -74,7 +74,7 @@ public class AYT_Graph : MonoBehaviour
         for (int i = 0; i < values.Count; i++)
         {
             float xPosition = xSpacing * (i + 1);
-            float yPosition = values[i] * 7f + 18;
+            float yPosition = values[i] * 10.6f + 18;
             GameObject circle = CreateCircle(new Vector2(xPosition, yPosition));
             circleList.Add(circle);
 
