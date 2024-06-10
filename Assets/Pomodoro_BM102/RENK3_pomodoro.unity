@@ -6169,6 +6169,7 @@ MonoBehaviour:
   stopButton: {fileID: 719972615}
   resetButton: {fileID: 2079067800}
   saveButton: {fileID: 1530946600}
+  switchToGameButton: {fileID: 687816498}
   progressBar: {fileID: 2122310609}
 --- !u!1 &1719075794
 GameObject:

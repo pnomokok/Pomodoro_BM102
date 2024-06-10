@@ -17,6 +17,8 @@ public class PomodoroTimer : MonoBehaviour
     public Button resetButton;
     public Button saveButton;   //Girdileri kaydetmek için kullanýlan buton.
 
+    public Button switchToGameButton;  //Ýçerik sayfasýna geçmeyi saðlayan buton.
+
     public Image progressBar;   //Zamanlayýcýnýn image ögesi.
 
     private PomodoroManager manager;  //PomodoroManager sýnýfýndan bir örnek oluþturuldu.
@@ -50,6 +52,8 @@ public class PomodoroTimer : MonoBehaviour
         UpdateTimerText();
         UpdateProgressBar();
         UpdateSetStatusText();
+
+        switchToGame();  //switchToGameButton'un aktifliðini kontrol eden fonksiyon çaðrýlýr.
     }
 
     private void Update()
@@ -95,6 +99,8 @@ public class PomodoroTimer : MonoBehaviour
             UpdateTimerText();
             UpdateProgressBar();
             UpdateSetStatusText();
+
+            switchToGame();
         }
     }
 
@@ -109,6 +115,8 @@ public class PomodoroTimer : MonoBehaviour
             manager.timerRunning = true;
             UpdateProgressBar();
             UpdateSetStatusText();
+
+            switchToGame();
         }
     }
 
@@ -119,6 +127,8 @@ public class PomodoroTimer : MonoBehaviour
         {
             manager.timerRunning = false;
         }
+
+        switchToGame();
     }
 
     //Zamanlayýcýyý tüm setler ile birlikte sýfýrlayan fonksiyon.
@@ -135,6 +145,8 @@ public class PomodoroTimer : MonoBehaviour
             UpdateSetStatusText();
             UpdateSetStatusText();
             ClearErrorMessage(); //Hata mesajý temizlenir.
+
+            switchToGame();
         }
     }
 
@@ -167,6 +179,18 @@ public class PomodoroTimer : MonoBehaviour
             workTimeInput.text = (manager.workTime / 60).ToString();    //Deðerler string türü ifadeye çevrilerek text objelerine atanýr.
             breakTimeInput.text = (manager.breakTime / 60).ToString();
             cycleCountInput.text = manager.cycleCount.ToString();
+        }
+    }
+
+    private void switchToGame()
+    {
+        if (!manager.isWorking)
+        {
+            switchToGameButton.interactable = true;   //Mola zamaný içerisindeyse buton aktif hale gelir.
+        }
+        else
+        {
+            switchToGameButton.interactable = false;  //Ders zamaný içerisindeyse buton inaktif hale gelir.
         }
     }
 
@@ -277,6 +301,8 @@ public class PomodoroTimer : MonoBehaviour
         if (manager != null)
         {
             manager.SaveState();  //Uygulamadan çýkýldýðýnda zamanlayýcýnýn mevcut durumu PlayerPref ile kaydedilir.
-        }
+        }
     }
 }
+
+

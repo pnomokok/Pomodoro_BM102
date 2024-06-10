@@ -19,6 +19,8 @@ public class PomodoroManager : MonoBehaviour
 
     public float totalWorkTime; // Toplam çalýþma süresi.
 
+    
+
     private void Awake()
     {
         if (Instance == null)
@@ -93,4 +95,5 @@ public class PomodoroManager : MonoBehaviour
         SaveState();  //Zamanlayýcýnýn mevcut durumu kaydedilir.
 
     }
+    
 }
