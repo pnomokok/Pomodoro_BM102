@@ -53,7 +53,7 @@ public class SuggestionController : MonoBehaviour
 
     }
 
-    void DisplaySuggestions(float heartRate) // Anket sonucuna göre stres seviyesi text'inde ne yazacaðýný belirleyen fonksiyon.
+    void DisplaySuggestions(float heartRate) // Stres seviyesi text'inde ne yazacaðýný belirleyen fonksiyon.
     {
         if (heartRate < 50)
         {

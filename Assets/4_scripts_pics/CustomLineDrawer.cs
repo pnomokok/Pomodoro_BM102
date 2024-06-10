@@ -2,22 +2,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(CanvasRenderer))] // Grafik çizgilerinin çizilebilmesi için, çizgilerin çizileceði Game Object'te Canvas Renderer bileþeninin bulunmasý gerekir. Bu satýrda bu zorunlu kýlýnýyor.
-public class CustomLineDrawer : MaskableGraphic // Çizgilerin grafiðin sýnýrlarýndan taþmamasý gerektiðinden 
+[RequireComponent(typeof(CanvasRenderer))] // Bu bileþenin CanvasRenderer bileþeni gerektirdiðini belirtir
+public class CustomLineDrawer : MaskableGraphic
 {
-    public List<Vector2> points; // Netleri ifade eden noktalarý içerecek liste tanýmlanýr.
-    
+    // Çizim yapýlacak noktalarýn listesi
+    public List<Vector2> points;
+
+    // Mesh'i doldurmak için kullanýlan fonksiyon
     protected override void OnPopulateMesh(VertexHelper vh)
     {
-        vh.Clear(); // Noktalarýn pozisyonlarý deðiþebildiðinden önce çizgiler temizlenir.
+        vh.Clear(); // Mevcut mesh verilerini temizler
 
-        if (points == null || points.Count < 2) // Nokta olmamasý ya da 1 tane olmasý durumunda çizgi çizilemeyeceðinden fonksiyondan çýkýlr.
+        // Eðer çizim yapýlacak yeterli nokta yoksa, fonksiyonu sonlandýrýr
+        if (points == null || points.Count < 2)
             return;
 
-        float width = 5f; // Çizginin kalýnlýðý belirlenir.
-        Vector2 prev = points[0];
+        float width = 5f; // Çizgi geniþliði
+        Vector2 prev = points[0]; // Ýlk noktayý alýr
 
-        for (int i = 1; i < points.Count; i++) // Bu döngüde sýrasý ile grafikteki ilk noktadan son noktaya kadar ardýþýk her iki nokta arasýna AddLineSegment() fonksiyonu ile çizgi çizilir.
+        // Her bir nokta çiftini alarak çizgi segmentlerini ekler
+        for (int i = 1; i < points.Count; i++)
         {
             Vector2 curr = points[i];
             AddLineSegment(vh, prev, curr, width);
@@ -25,23 +29,27 @@ public class CustomLineDrawer : MaskableGraphic // Çizgilerin grafiðin sýnýrlarý
         }
     }
 
-    private void AddLineSegment(VertexHelper vh, Vector2 start, Vector2 end, float width) // Bu fonksiyon ardýþýk iki noktanýn bir çizgiyle birleþtirilmesini saðlar.
+    // Çizgi segmenti ekler
+    private void AddLineSegment(VertexHelper vh, Vector2 start, Vector2 end, float width)
     {
-        Vector2 dir = (end - start).normalized; // Ýki noktayý kullanarak yön vektörü elde edilir. Boyu 1 birimdir, yön belirtir.
-        Vector2 normal = new Vector2(-dir.y, dir.x); // Ýki nokta araýndaki normal vektörü oluþturulur.
+        Vector2 dir = (end - start).normalized; // Ýki nokta arasýndaki yön
+        Vector2 normal = new Vector2(-dir.y, dir.x); // Yönün dik açýsý
 
+        // Çizgi segmentinin dört köþe noktasýný hesaplar
         Vector2 v0 = start - normal * width;
         Vector2 v1 = start + normal * width;
         Vector2 v2 = end - normal * width;
         Vector2 v3 = end + normal * width;
 
-        int idx = vh.currentVertCount;
+        int idx = vh.currentVertCount; // Mevcut vertex sayýsýný alýr
 
+        // Dört köþe noktasýný mesh'e ekler
         vh.AddVert(v0, color, new Vector2(0, 0));
         vh.AddVert(v1, color, new Vector2(0, 1));
         vh.AddVert(v2, color, new Vector2(1, 0));
         vh.AddVert(v3, color, new Vector2(1, 1));
 
+        // Ýki üçgen oluþturarak çizgi segmentini oluþturur
         vh.AddTriangle(idx, idx + 1, idx + 2);
         vh.AddTriangle(idx + 2, idx + 1, idx + 3);
     }

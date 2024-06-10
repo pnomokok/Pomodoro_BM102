@@ -1,40 +1,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;  // TextMeshPro kullanýmý için
+using TMPro;
 
 public class AYT_Graph : MonoBehaviour
 {
-    [SerializeField] private Sprite circleSprite;
-    [SerializeField] private GameObject linePrefab;  // Çizgi prefab'ý referansý
-    [SerializeField] private GameObject textPrefab;  // Metin prefab'ý referansý
-    private RectTransform graphContainer;
-    private List<GameObject> circleList = new List<GameObject>();
-    private List<GameObject> lineList = new List<GameObject>();  // Çizgiler için liste
-    private List<GameObject> textList = new List<GameObject>();  // Metinler için liste
-    private CustomLineDrawer lineDrawer;
+    // Editor üzerinden ayarlanabilir deðiþkenler
+    [SerializeField] private Sprite circleSprite; // Nokta gösterimi için kullanýlacak sprite
+    [SerializeField] private GameObject linePrefab; // Çizgi prefab'ý referansý
+    [SerializeField] private GameObject textPrefab; // Metin prefab'ý referansý
+
+    // Özel bileþenler ve veri listeleri
+    private RectTransform graphContainer; // Grafiðin yerleþtirileceði container
+    private List<GameObject> circleList = new List<GameObject>(); // Noktalarýn listesi
+    private List<GameObject> lineList = new List<GameObject>(); // Çizgilerin listesi
+    private List<GameObject> textList = new List<GameObject>(); // Metinlerin listesi
+    private CustomLineDrawer lineDrawer; // Çizgi çizim bileþeni
 
     private void Start()
     {
+        // GraphContainer nesnesini bulup referans alýr
         graphContainer = transform.Find("GraphContainer").GetComponent<RectTransform>();
+
+        // GraphContainer nesnesine CustomLineDrawer bileþeni ekler
         lineDrawer = graphContainer.gameObject.AddComponent<CustomLineDrawer>();
 
-        //// Çizgi rengini burada ayarlayýn
-        //lineDrawer.color = new Color32(0x1D, 0x26, 0x3B, 0xFF);  // #1D263B rengini ayarlayýn
+        // Çizgi rengini ayarlar
+        lineDrawer.color = new Color32(0x78, 0x72, 0xDE, 0xFF); // #7872DE rengini ayarlar
 
-        // Çizgi rengini burada ayarlayýn
-        lineDrawer.color = new Color32(0x78, 0x72, 0xDE, 0xFF);  // #7872DE rengini ayarlayýn
-
-
-        //if (AYT_DataManager.aytInstance != null && AYT_DataManager.aytInstance.aytLastFiveNets != null)
-        //{
-        //    Debug.Log("Graph update called with data: " + string.Join(", ", TYT_DataManager.tytInstance.tytLastFiveNets)); // Debug log
-
-        //    UpdateGraph(AYT_DataManager.aytInstance.aytLastFiveNets);
-        //}
+        // Grafiði yeniler
         RefreshGraph();
     }
 
+    // Yeni bir nokta oluþturur
     private GameObject CreateCircle(Vector2 anchoredPosition)
     {
         GameObject gameObject = new GameObject("circle", typeof(Image));
@@ -48,9 +46,10 @@ public class AYT_Graph : MonoBehaviour
         return gameObject;
     }
 
+    // Grafiði günceller
     public void UpdateGraph(List<float> values)
     {
-        // Eski öðeleri temizle
+        // Eski öðeleri temizler
         foreach (GameObject circle in circleList)
         {
             Destroy(circle);
@@ -68,17 +67,19 @@ public class AYT_Graph : MonoBehaviour
         lineList.Clear();
         textList.Clear();
 
+        // Noktalar arasýndaki yatay mesafeyi ayarlar
         float xSpacing = 150f;
         List<Vector2> positions = new List<Vector2>();
 
+        // Yeni noktalar ve çizgiler oluþturur
         for (int i = 0; i < values.Count; i++)
         {
             float xPosition = xSpacing * (i + 1);
-            float yPosition = values[i] * 10.6f + 18;
+            float yPosition = values[i] * 10.6f + 18; // Y pozisyonunu hesaplar
             GameObject circle = CreateCircle(new Vector2(xPosition, yPosition));
             circleList.Add(circle);
 
-            // Convert the anchored position to local position
+            // Anchored konum local konuma dönüþtürülür
             Vector2 anchoredPos = new Vector2(xPosition, yPosition);
             positions.Add(anchoredPos);
 
@@ -97,9 +98,12 @@ public class AYT_Graph : MonoBehaviour
             textList.Add(text);
         }
 
+        // Çizgi noktalarýný ayarlar ve çizimi tetikler
         lineDrawer.points = positions;
-        lineDrawer.SetVerticesDirty();  // Çizgiyi yeniden çizmeyi tetikle
+        lineDrawer.SetVerticesDirty(); // Çizgiyi yeniden çizmeyi tetikler
     }
+
+    // Grafiði yeniler
     public void RefreshGraph()
     {
         if (AYT_DataManager.aytInstance != null && AYT_DataManager.aytInstance.aytLastFiveNets != null)
