@@ -5,24 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Pomodoro_BM102/3_pomodoro.unity
-    guid: 3dd3b17ef51545f40ae56b4add361405
-  - enabled: 0
-    path: Assets/Pomodoro_BM102/2_motivasyon.unity
-    guid: 4328d39d32e6e5040870617c5fd61fb4
-  - enabled: 0
-    path: Assets/Pomodoro_BM102/4_deneme.unity
-    guid: ec475ff0f0b61514e9ea32ccb3e891ad
-  - enabled: 0
-    path: Assets/Pomodoro_BM102/rrr4.1_tyt_sonucekle 1.unity
-    guid: 077592ec411554543bf9b95ebf642b65
-  - enabled: 0
-    path: Assets/Pomodoro_BM102/rrr4.1_ayt_sonucekle 1.unity
-    guid: ba8107cc97f6323459cd1adbf09597c6
-  - enabled: 0
-    path: Assets/Pomodoro_BM102/rrr4.2_sonucgor 1.unity
-    guid: e80e237cc44c9ad49822ddab9c995ae7
   - enabled: 1
     path: Assets/Pomodoro_BM102/RENK3_pomodoro.unity
     guid: db302303ce2ee0b49953f3c299179ea9
@@ -47,17 +29,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Pomodoro_BM102/1.2_truefalse.unity
     guid: ac4a0a47c94db434d8f2dbc7ab715148
-  - enabled: 0
-    path: Assets/Pomodoro_BM102/5.3_ssonuc.unity
-    guid: fd4b406d5fd9e1b438ea83eb2cfbaee6
-  - enabled: 0
-    path: Assets/Pomodoro_BM102/5.2_sensor.unity
-    guid: f08d217be63cadb4aa8f4ec9f593d82e
   - enabled: 1
     path: Assets/Pomodoro_BM102/RENK5.1_anket.unity
     guid: 4c159986fe1346c4f9e208a1ec4e6bcb
   - enabled: 1
-    path: Assets/Pomodoro_BM102/RENKRZ5.3_ssonuc.unity
+    path: Assets/Pomodoro_BM102/RENK5.3_ssonuc.unity
     guid: 77f3cdd4d078b6346ad01c75a0fecddf
   - enabled: 1
     path: Assets/Pomodoro_BM102/RENK2_motivasyon.unity
@@ -68,4 +44,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Pomodoro_BM102/RENK5.2_sensor.unity
     guid: 1b76d8f98376ee0479661f076cd490a3
+  - enabled: 1
+    path: Assets/Pomodoro_BM102/RENK5.4_ssonuc.unity
+    guid: aa07f0aa2d4f3ac4e80d9a05db12c7d0
   m_configObjects: {}
